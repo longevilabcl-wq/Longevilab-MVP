@@ -33,33 +33,41 @@ export const EcosystemSection: React.FC<EcosystemSectionProps> = ({
           {ECOSYSTEM_PRODUCTS.map((prod) => (
             <div
               key={prod.id}
-              className="p-7 rounded-3xl bg-white border border-[#2F312D]/15 flex flex-col justify-between transition-all hover:border-[#2F312D]/30 shadow-2xs group"
+              className="p-7 rounded-3xl border-2 flex flex-col justify-between transition-all hover:-translate-y-1 hover:shadow-md group"
+              style={{
+                backgroundColor: prod.bg,
+                borderColor: prod.border,
+              }}
             >
               <div>
                 <div className="flex items-center justify-between gap-3 mb-3">
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#2F312D]/60">
+                  <span
+                    className="text-xs font-bold uppercase tracking-wider"
+                    style={{ color: prod.accentColor }}
+                  >
                     {prod.name}
                   </span>
-                  <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-[#2F312D]/5 text-[#2F312D]/75">
+                  <span className="text-xs font-bold px-3 py-1 rounded-full bg-white/80 border border-black/10 text-[#1F201D]">
                     {prod.badge}
                   </span>
                 </div>
-                <h3 className="text-xl font-bold text-[#2F312D] mb-3 group-hover:text-black">
+                <h3 className="text-xl font-bold text-[#1F201D] mb-3">
                   {prod.title}
                 </h3>
-                <p className="text-base text-[#2F312D]/80 leading-relaxed">
+                <p className="text-base text-[#2F312D]/85 leading-relaxed">
                   {prod.description}
                 </p>
               </div>
 
-              <div className="mt-6 pt-4 border-t border-[#2F312D]/10">
+              <div className="mt-6 pt-4 border-t border-black/10">
                 <button
                   type="button"
                   onClick={() => setSelectedProduct({ name: prod.name, title: prod.title })}
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-base font-semibold text-[#2F312D] bg-[#F7F3EC] hover:bg-[#EAE4D8] transition-colors cursor-pointer"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-base font-bold bg-white hover:bg-white/90 shadow-2xs transition-colors cursor-pointer"
+                  style={{ color: prod.accentColor }}
                 >
                   <span>{prod.cta}</span>
-                  <ArrowRight className="w-4 h-4 text-[#2F312D]/60" />
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
             </div>

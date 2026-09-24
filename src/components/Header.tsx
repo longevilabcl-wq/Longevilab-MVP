@@ -65,9 +65,10 @@ export const Header: React.FC<HeaderProps> = ({
             onNavigate('home');
             setMobileMenuOpen(false);
           }}
-          className="text-2xl font-bold tracking-tight text-[#2F312D] hover:opacity-85 transition-opacity text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-[#2F312D] rounded-lg p-1"
+          className="text-2xl font-bold tracking-tight text-[#2F312D] hover:opacity-85 transition-opacity text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-[#2F312D] rounded-lg p-1 flex items-center gap-1.5"
         >
-          LongeviLab
+          <span>LongeviLab</span>
+          <span className="w-2 h-2 rounded-full bg-[#C15832]" aria-hidden="true" />
         </button>
 
         {/* Zone 2: Clean navigation links */}
@@ -80,7 +81,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => onNavigate('home')}
             className={`transition-colors py-1 cursor-pointer border-b-2 ${
               currentView === 'home'
-                ? 'border-[#2F312D] text-[#2F312D] font-semibold'
+                ? 'border-[#C15832] text-[#1F201D] font-bold'
                 : 'border-transparent text-[#2F312D]/80 hover:text-[#2F312D]'
             }`}
           >
@@ -91,7 +92,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => onNavigate('mi-longevidad')}
             className={`transition-colors py-1 cursor-pointer border-b-2 ${
               currentView === 'mi-longevidad'
-                ? 'border-[#2F312D] text-[#2F312D] font-semibold'
+                ? 'border-[#C15832] text-[#1F201D] font-bold'
                 : 'border-transparent text-[#2F312D]/80 hover:text-[#2F312D]'
             }`}
           >
@@ -102,7 +103,7 @@ export const Header: React.FC<HeaderProps> = ({
             onClick={() => onNavigate('sobre-longevilab')}
             className={`transition-colors py-1 cursor-pointer border-b-2 ${
               currentView === 'sobre-longevilab'
-                ? 'border-[#2F312D] text-[#2F312D] font-semibold'
+                ? 'border-[#C15832] text-[#1F201D] font-bold'
                 : 'border-transparent text-[#2F312D]/80 hover:text-[#2F312D]'
             }`}
           >
@@ -115,7 +116,7 @@ export const Header: React.FC<HeaderProps> = ({
           <button
             type="button"
             onClick={() => onNavigate('mi-longevidad')}
-            className="px-5 py-2.5 text-base font-semibold text-white bg-[#2F312D] hover:bg-[#1E1F1C] active:scale-[0.99] rounded-xl transition-all shadow-sm cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#2F312D]"
+            className="px-5 py-2.5 text-base font-bold text-white bg-[#C15832] hover:bg-[#A84523] active:bg-[#913B1B] active:scale-[0.99] rounded-xl transition-all shadow-sm hover:shadow-md cursor-pointer focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[#C15832]"
           >
             Construir mi mapa
           </button>
@@ -181,7 +182,7 @@ export const Header: React.FC<HeaderProps> = ({
                 onNavigate('mi-longevidad');
                 setMobileMenuOpen(false);
               }}
-              className="w-full text-center py-3 text-lg font-semibold text-white bg-[#2F312D] rounded-xl shadow-sm cursor-pointer"
+              className="w-full text-center py-3 text-lg font-bold text-white bg-[#C15832] hover:bg-[#A84523] rounded-xl shadow-sm cursor-pointer"
             >
               Construir mi mapa
             </button>

@@ -291,11 +291,11 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
   if (currentStep === 9) {
     return (
       <div className="max-w-2xl mx-auto py-16 px-4 animate-in fade-in duration-300">
-        <div className="bg-white border border-[#2F312D]/15 rounded-3xl p-8 sm:p-12 text-center shadow-sm">
-          <div className="w-16 h-16 mx-auto rounded-3xl bg-[#D3E0D0] flex items-center justify-center text-[#324E2E] mb-6">
-            <Sun className="w-8 h-8" />
+        <div className="bg-white border-2 border-[#F7C6AF] rounded-3xl p-8 sm:p-12 text-center shadow-lg bg-gradient-to-b from-[#FDFBF7] to-white">
+          <div className="w-18 h-18 mx-auto rounded-3xl bg-[#FCF7E9] border-2 border-[#F4DC9A] flex items-center justify-center text-[#825509] mb-6 shadow-sm">
+            <Sun className="w-9 h-9" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#2F312D] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1F201D] tracking-tight">
             Tus próximos años no están escritos.
           </h1>
           <p className="mt-5 text-lg sm:text-xl text-[#2F312D]/85 leading-relaxed">
@@ -308,7 +308,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                 setCurrentStep(10);
                 saveProgress(10, responses, true);
               }}
-              className="inline-flex items-center gap-2 px-8 py-4 text-lg font-bold text-white bg-[#2F312D] hover:bg-[#1E1F1C] active:scale-[0.99] rounded-2xl transition-all shadow-sm cursor-pointer"
+              className="inline-flex items-center gap-2.5 px-8 py-4 text-lg font-bold text-white bg-[#C15832] hover:bg-[#A84523] active:bg-[#913B1B] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C15832]/25 cursor-pointer"
             >
               <span>Ver mi mapa</span>
               <ArrowRight className="w-5 h-5" />
@@ -367,26 +367,48 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           </p>
         </div>
 
-        {/* 3 Activations Cards */}
+        {/* 3 Activations Cards with warm harmonious palettes */}
         <div className="space-y-5">
-          {activations.map((item, idx) => (
-            <div
-              key={item.id}
-              className="p-6 sm:p-8 rounded-3xl bg-white border border-[#2F312D]/15 shadow-2xs flex flex-col sm:flex-row items-start gap-5"
-            >
-              <div className="w-10 h-10 rounded-2xl bg-[#DDD6F3] text-[#4A3B69] flex items-center justify-center font-bold text-lg shrink-0">
-                {idx + 1}
+          {activations.map((item, idx) => {
+            const styles = [
+              { bg: '#FDF1EA', border: '#F7C6AF', numBg: '#FBDACD', text: '#A13F19' },
+              { bg: '#EDF7EE', border: '#BBE3BE', numBg: '#D2F2D5', text: '#205B32' },
+              { bg: '#EEF6FB', border: '#B6DBF5', numBg: '#D1EBFB', text: '#14517A' },
+            ][idx % 3];
+
+            return (
+              <div
+                key={item.id}
+                className="p-6 sm:p-8 rounded-3xl border-2 shadow-sm flex flex-col sm:flex-row items-start gap-5 transition-transform hover:-translate-y-0.5"
+                style={{
+                  backgroundColor: styles.bg,
+                  borderColor: styles.border,
+                }}
+              >
+                <div
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl shrink-0 shadow-2xs border"
+                  style={{
+                    backgroundColor: styles.numBg,
+                    color: styles.text,
+                    borderColor: styles.border,
+                  }}
+                >
+                  {idx + 1}
+                </div>
+                <div className="flex-1">
+                  <span
+                    className="text-xs font-bold uppercase tracking-wider block mb-1.5"
+                    style={{ color: styles.text }}
+                  >
+                    {item.category}
+                  </span>
+                  <p className="text-lg sm:text-xl font-semibold text-[#1F201D] leading-relaxed">
+                    {item.actionText}
+                  </p>
+                </div>
               </div>
-              <div className="flex-1">
-                <span className="text-xs font-bold uppercase tracking-wider text-[#2F312D]/60 block mb-1">
-                  {item.category}
-                </span>
-                <p className="text-lg sm:text-xl font-medium text-[#2F312D] leading-relaxed">
-                  {item.actionText}
-                </p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Back to map & Print actions */}
@@ -394,15 +416,15 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           <button
             type="button"
             onClick={() => setCurrentStep(10)}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-semibold text-[#2F312D] bg-white border border-[#2F312D]/20 hover:bg-[#F4F1FA] rounded-2xl transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-bold text-[#2F312D] bg-white border-2 border-[#2F312D]/20 hover:bg-[#FDF1EA] hover:border-[#F7C6AF] rounded-2xl transition-colors cursor-pointer shadow-2xs"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-5 h-5" />
             Volver a mi mapa
           </button>
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-semibold text-white bg-[#2F312D] hover:bg-[#1E1F1C] rounded-2xl transition-colors cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-bold text-white bg-[#C15832] hover:bg-[#A84523] active:bg-[#913B1B] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C15832]/25 cursor-pointer"
           >
             Guardar o imprimir todo
           </button>
@@ -867,16 +889,16 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
         {/* --- PASO 8: PRIORIDADES (MAX 5) --- */}
         {currentStep === 8 && (
           <div className="space-y-6 animate-in fade-in duration-200">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-4 rounded-2xl bg-white border border-[#2F312D]/15">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 rounded-3xl bg-white border-2 border-[#F7C6AF] shadow-xs">
               <div>
-                <span className="text-base sm:text-lg font-bold text-[#2F312D]">
+                <span className="text-lg sm:text-xl font-bold text-[#1F201D]">
                   Elige hasta 5 prioridades
                 </span>
-                <p className="text-xs sm:text-sm text-[#2F312D]/70 mt-0.5">
+                <p className="text-sm text-[#2F312D]/80 mt-0.5">
                   Selecciona aquello a lo que quieres darle mayor espacio.
                 </p>
               </div>
-              <div className="px-3.5 py-1.5 rounded-xl bg-[#F7F3EC] border border-[#2F312D]/15 text-[#2F312D] text-sm sm:text-base font-semibold tabular-nums shrink-0">
+              <div className="px-4 py-2 rounded-xl bg-[#FDF1EA] border-2 border-[#F7C6AF] text-[#A13F19] text-base font-extrabold tabular-nums shrink-0">
                 {(responses.priorities?.length || 0)} de 5 seleccionadas
               </div>
             </div>
@@ -897,18 +919,18 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                         priorities: toggleArrayItem(responses.priorities, opt, 5),
                       })
                     }
-                    accentBg="#F4F1FA"
-                    accentBorder="#DDD6F3"
+                    accentBg="#FDF1EA"
+                    accentBorder="#C15832"
                   />
                 );
               })}
             </div>
 
             {responses.priorities?.includes('Algo que no aparece aquí') && (
-              <div className="p-4 rounded-2xl bg-white border border-[#2F312D]/20 mt-4">
+              <div className="p-5 rounded-2xl bg-white border-2 border-[#F7C6AF] mt-4 shadow-2xs">
                 <label
                   htmlFor="priorities-other"
-                  className="block text-sm font-semibold text-[#2F312D] mb-1.5"
+                  className="block text-base font-bold text-[#A13F19] mb-1.5"
                 >
                   ¿Qué prioridad te gustaría agregar?
                 </label>
@@ -918,7 +940,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                   value={responses.prioritiesOtherText || ''}
                   onChange={(e) => setResponses({ ...responses, prioritiesOtherText: e.target.value })}
                   placeholder="Escribe tu prioridad personalizada…"
-                  className="w-full p-3.5 rounded-xl bg-[#F7F3EC] border border-[#2F312D]/20 text-base text-[#2F312D] placeholder:text-[#2F312D]/40 focus:border-[#2F312D] focus:ring-1 focus:ring-[#2F312D]"
+                  className="w-full p-4 rounded-xl bg-[#FDFBF7] border-2 border-[#F7C6AF] text-base text-[#1F201D] placeholder:text-[#2F312D]/50 focus:border-[#C15832] focus:ring-2 focus:ring-[#C15832]"
                 />
               </div>
             )}
@@ -930,9 +952,9 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
       {errorMessage && (
         <div
           role="alert"
-          className="mt-6 p-4 rounded-2xl bg-[#FDF7F3] border border-[#ECCDBB] text-[#68402A] text-base font-medium flex items-center gap-3 animate-in fade-in"
+          className="mt-6 p-4 rounded-2xl bg-[#FDF1EA] border-2 border-[#F7C6AF] text-[#A13F19] text-base font-bold flex items-center gap-3 animate-in fade-in shadow-xs"
         >
-          <span className="w-2 h-2 rounded-full bg-[#68402A] shrink-0" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#C15832] shrink-0" />
           <span>{errorMessage}</span>
         </div>
       )}
@@ -943,7 +965,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           <button
             type="button"
             onClick={goToPreviousStep}
-            className="inline-flex items-center gap-2 px-5 py-3.5 text-base font-semibold text-[#2F312D] hover:bg-black/5 rounded-2xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-3.5 text-base font-bold text-[#2F312D] hover:bg-black/5 rounded-2xl transition-colors cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Anterior</span>
@@ -961,7 +983,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
         <button
           type="button"
           onClick={validateAndAdvance}
-          className="inline-flex items-center gap-2 px-8 py-3.5 text-lg font-bold text-white bg-[#2F312D] hover:bg-[#1E1F1C] active:scale-[0.99] rounded-2xl transition-all shadow-sm cursor-pointer"
+          className="inline-flex items-center gap-2.5 px-8 py-4 text-lg font-bold text-white bg-[#C15832] hover:bg-[#A84523] active:bg-[#913B1B] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C15832]/25 cursor-pointer"
         >
           <span>{currentStep === 1 ? 'Comenzar' : currentStep === 8 ? 'Construir mi mapa' : 'Continuar'}</span>
           <ArrowRight className="w-5 h-5" />
