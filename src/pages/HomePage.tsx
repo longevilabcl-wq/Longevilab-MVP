@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { ViewType } from '../types';
 import { Modal } from '../components/Modal';
-import { ArrowRight, Compass, Sparkles, BookOpen, Users, Palette, Plane, Award, Heart, HelpCircle } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+import heroImg from '../assets/images/hero_active_longevity_1790256767698.jpg';
+import learningImg from '../assets/images/learning_workshop_1790256777861.jpg';
+import communityImg from '../assets/images/community_connection_1790256788397.jpg';
 
 interface HomePageProps {
   onNavigate: (view: ViewType) => void;
@@ -81,13 +84,14 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
           <div className="lg:col-span-5">
             <div className="relative rounded-3xl overflow-hidden shadow-lg border border-[#2F312D]/10 bg-[#E8E2D5] aspect-4/3 lg:aspect-4/3">
               <img
-                src="/src/assets/images/hero_active_longevity_1790256767698.jpg"
+                src={heroImg || '/images/hero_active_longevity_1790256767698.jpg'}
                 alt="Personas colaborando y conversando activamente en un entorno luminoso y contemporáneo"
                 className="w-full h-full object-cover object-center"
-                referrerPolicy="no-referrer"
                 onError={(e) => {
-                  // Fallback container in case of any loading quirk
-                  (e.target as HTMLElement).style.display = 'none';
+                  const target = e.currentTarget;
+                  if (!target.src.includes('/images/')) {
+                    target.src = '/images/hero_active_longevity_1790256767698.jpg';
+                  }
                 }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#2F312D]/40 via-transparent to-transparent pointer-events-none" />
@@ -137,10 +141,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <div className="relative rounded-3xl overflow-hidden border border-[#2F312D]/10 bg-[#E8E2D5] aspect-16/10">
             <img
-              src="/src/assets/images/learning_workshop_1790256777861.jpg"
+              src={learningImg || '/images/learning_workshop_1790256777861.jpg'}
               alt="Adulto aprendiendo en un taller creativo con luz natural"
               className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('/images/')) {
+                  target.src = '/images/learning_workshop_1790256777861.jpg';
+                }
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-4 left-4 right-4 text-white text-sm font-medium">
@@ -150,10 +159,15 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
 
           <div className="relative rounded-3xl overflow-hidden border border-[#2F312D]/10 bg-[#E8E2D5] aspect-16/10">
             <img
-              src="/src/assets/images/community_connection_1790256788397.jpg"
+              src={communityImg || '/images/community_connection_1790256788397.jpg'}
               alt="Personas de distintas generaciones compartiendo una conversación en un jardín"
               className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
+              onError={(e) => {
+                const target = e.currentTarget;
+                if (!target.src.includes('/images/')) {
+                  target.src = '/images/community_connection_1790256788397.jpg';
+                }
+              }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
             <div className="absolute bottom-4 left-4 right-4 text-white text-sm font-medium">
