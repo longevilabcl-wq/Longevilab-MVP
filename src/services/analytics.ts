@@ -8,6 +8,7 @@ export type AnalyticsEventType =
   | 'completed_step'
   | 'completed_map'
   | 'selected_activation'
+  | 'clicked_activation_detail'
   | 'printed_map'
   | 'restarted_map';
 

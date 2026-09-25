@@ -214,46 +214,96 @@ export function generateLongevityMap(responses: LongevityResponses): LongevityMa
 }
 
 export function generateActivations(responses: LongevityResponses, map: LongevityMap): ActivationItem[] {
-  const activationsPool: Record<string, { category: string; actionText: string }> = {
+  const activationsPool: Record<
+    string,
+    {
+      category: string;
+      name: string;
+      explanation: string;
+      whyUseful: string;
+      concreteAction: string;
+      ctaText: string;
+    }
+  > = {
     amistades: {
-      category: 'Amistades / Conexión',
-      actionText: 'Explora durante este mes una actividad o espacio donde puedas conocer personas con intereses similares.',
+      category: 'Vínculos y Conexión',
+      name: 'Abrir una nueva conversación',
+      explanation: 'Las relaciones significativas se renuevan cuando nos damos permiso de conocer personas con afinidades actuales.',
+      whyUseful: 'Te ayuda a enriquecer tu red cotidiana con personas que comparten tus intereses presentes, sin expectativas rígidas.',
+      concreteAction: 'Podrías explorar este mes un taller, club de lectura o actividad comunitaria que te motive y presentarte con alguien nuevo.',
+      ctaText: 'Comenzar esta activación',
     },
     proyectos: {
-      category: 'Crear / Proyectos',
-      actionText: 'Elige una idea que llevas tiempo postergando y dedica 30 minutos esta semana a escribir cuál podría ser su primer paso.',
+      category: 'Creación y Proyectos',
+      name: 'Darle vida a una idea pendiente',
+      explanation: 'Todos guardamos proyectos postergados esperando el "momento perfecto". Los primeros pasos no requieren grandes recursos.',
+      whyUseful: 'Activar tu creatividad despierta entusiasmo y convierte el tiempo futuro en un espacio propio de realización.',
+      concreteAction: 'Te proponemos elegir una idea y dedicar 30 minutos esta semana únicamente a escribir cuál sería su primer paso concreto.',
+      ctaText: 'Comenzar esta activación',
     },
     aprender: {
-      category: 'Aprendizaje',
-      actionText: 'Escoge algo que te genere curiosidad y busca una primera experiencia para probarlo antes de comprometerte a largo plazo.',
+      category: 'Curiosidad y Aprendizaje',
+      name: 'Probar un saber que te intriga',
+      explanation: 'Aprender algo nuevo mantiene la mente despierta y nos conecta con la fascinación de descubrir el mundo a nuestro ritmo.',
+      whyUseful: 'Estimula la neuroplasticidad y genera satisfacción personal al comprobar que la capacidad de asombro sigue intacta.',
+      concreteAction: 'Una posibilidad para esta semana es buscar un video introductorio, libro o clase de prueba de esa habilidad que te da curiosidad.',
+      ctaText: 'Comenzar esta activación',
     },
     contribuir: {
-      category: 'Participación / Contribuir',
-      actionText: 'Explora una oportunidad de voluntariado, mentoría o participación donde puedas compartir algo que sabes o te importa.',
+      category: 'Participación y Legado',
+      name: 'Compartir tu experiencia acumulada',
+      explanation: 'El valor de tu trayectoria se multiplica cuando lo pones a disposición de otras generaciones o de tu entorno.',
+      whyUseful: 'Sentirte útil y conectado con una causa colectiva fortalece la autoestima y crea lazos intergeneracionales duraderos.',
+      concreteAction: 'Podrías explorar una iniciativa de mentoría vecinal, voluntariado social o taller donde tu experiencia aporte valor.',
+      ctaText: 'Comenzar esta activación',
     },
     proposito: {
-      category: 'Propósito',
-      actionText: 'Reserva un momento para identificar tres experiencias de tu vida en las que hayas sentido que lo que hacías tenía sentido para ti.',
+      category: 'Sentido y Propósito',
+      name: 'Identificar lo que enciende tus días',
+      explanation: 'El propósito no es una gran hazaña heroica; surge de los pequeños momentos que le dan coherencia a tu vida.',
+      whyUseful: 'Tener claro qué te moviliza hoy te ayuda a tomar decisiones más alineadas con lo que verdaderamente valoras.',
+      concreteAction: 'Te proponemos escribir en un cuaderno tres momentos recientes donde sentiste que lo que hacías tenía verdadero significado.',
+      ctaText: 'Comenzar esta activación',
     },
     jubilacion: {
-      category: 'Próxima etapa',
-      actionText: 'Imagina cómo te gustaría que fuera un día común de tu vida cuando el trabajo ya no organice tu rutina.',
+      category: 'Próxima Etapa y Rutina',
+      name: 'Diseñar tu tiempo con libertad',
+      explanation: 'La transición a una etapa con menor carga laboral es una oportunidad para diseñar una rutina hecha a tu propia medida.',
+      whyUseful: 'Anticipar cómo distribuir tus mañanas y tardes evita el vacío y te da serenidad para disfrutar de tu independencia.',
+      concreteAction: 'Una posibilidad para esta semana es dibujar en una hoja cómo te gustaría que fuera tu día ideal un martes por la mañana.',
+      ctaText: 'Comenzar esta activación',
     },
     autonomia: {
-      category: 'Vivienda / Autonomía',
-      actionText: 'Haz una lista de las cosas de tu forma de vivir actual que te gustaría conservar aunque tus necesidades cambien en el futuro.',
+      category: 'Autonomía y Entorno',
+      name: 'Cuidar tus espacios de independencia',
+      explanation: 'Mantener el control sobre tu hogar, tus decisiones y tu estilo de vida es el pilar de un envejecimiento pleno.',
+      whyUseful: 'Revisar con tiempo las adaptaciones que te hagan sentir cómodo/a te permite vivir con tranquilidad y seguridad.',
+      concreteAction: 'Podrías hacer una lista breve de tres aspectos de tu rutina actual que consideras no negociables para tu bienestar.',
+      ctaText: 'Comenzar esta activación',
     },
     legado: {
-      category: 'Legado / Memoria',
-      actionText: 'Piensa en una historia, aprendizaje o mensaje que te gustaría que alguien importante para ti conociera.',
+      category: 'Memoria y Afectos',
+      name: 'Transmitir una historia o recuerdo',
+      explanation: 'Nuestras historias familiares y aprendizajes personales son el mayor regalo que podemos dejar a quienes amamos.',
+      whyUseful: 'Compartir tus vivencias une a las generaciones y preserva la memoria viva de lo que has construido.',
+      concreteAction: 'Te proponemos elegir una anécdota significativa y grabarla en un audio breve o escribirla para compartirla con alguien cercano.',
+      ctaText: 'Comenzar esta activación',
     },
     descanso: {
-      category: 'Descanso y Bienestar',
-      actionText: 'Piensa qué significaría para ti tener más espacio para descansar sin sentir que debes llenarlo inmediatamente con nuevas obligaciones.',
+      category: 'Bienestar y Calma',
+      name: 'Habitar tu propio ritmo',
+      explanation: 'El descanso consciente no es pereza ni tiempo perdido: es el espacio donde el cuerpo y la mente recuperan su energía vital.',
+      whyUseful: 'Aprender a disfrutar de momentos de contemplación sin culpa reduce el estrés y renueva la claridad mental.',
+      concreteAction: 'Una posibilidad para esta semana es reservar dos mañanas o tardes para pasear, leer o no hacer nada programado.',
+      ctaText: 'Comenzar esta activación',
     },
     familia: {
-      category: 'Familia',
-      actionText: 'Elige un momento durante las próximas semanas para compartir con alguien cercano algo que te gustaría vivir o construir en los próximos años.',
+      category: 'Familia e Intergeneracional',
+      name: 'Crear un encuentro diferente',
+      explanation: 'Compartir con la familia fuera de las celebraciones obligadas permite construir complicidad genuina entre distintas edades.',
+      whyUseful: 'Fortalece los lazos afectivos y permite que las personas jóvenes conozcan facetas creativas tuyas que antes no habían visto.',
+      concreteAction: 'Podrías invitar a un hijo, nieto o familiar a cocinar juntos una receta o a dar un paseo conversando sobre sus proyectos.',
+      ctaText: 'Comenzar esta activación',
     },
   };
 
@@ -317,6 +367,10 @@ export function generateActivations(responses: LongevityResponses, map: Longevit
   return distinctKeys.map((k) => ({
     id: k,
     category: activationsPool[k].category,
-    actionText: activationsPool[k].actionText,
+    name: activationsPool[k].name,
+    explanation: activationsPool[k].explanation,
+    whyUseful: activationsPool[k].whyUseful,
+    concreteAction: activationsPool[k].concreteAction,
+    ctaText: activationsPool[k].ctaText,
   }));
 }

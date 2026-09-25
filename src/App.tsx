@@ -59,11 +59,11 @@ export default function App() {
   }, [navigateTo]);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#F7F3EC] text-[#2F312D]">
+    <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#303530]">
       {/* Accessible skip link */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-[#2F312D] focus:shadow-md"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:p-4 focus:bg-white focus:text-[#303530] focus:shadow-md focus:border-2 focus:border-[#4F6757]"
       >
         Saltar al contenido principal
       </a>

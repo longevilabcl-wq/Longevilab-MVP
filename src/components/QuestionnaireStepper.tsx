@@ -25,7 +25,7 @@ import { Modal } from './Modal';
 import { generateLongevityMap, generateActivations } from '../services/mapEngine';
 import { loadSavedProgress, saveProgress, clearProgress } from '../services/storage';
 import { trackEvent } from '../services/analytics';
-import { ArrowLeft, ArrowRight, RotateCcw, Compass, Sun, Sparkles, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, RotateCcw, Compass, Sun, Sparkles, CheckCircle2, Lightbulb, Play, Check } from 'lucide-react';
 
 interface QuestionnaireStepperProps {
   onExit: () => void;
@@ -48,6 +48,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
 
   // Restart confirmation modal
   const [showRestartModal, setShowRestartModal] = useState<boolean>(false);
+  const [activeActivationModal, setActiveActivationModal] = useState<ActivationItem | null>(null);
 
   // Results
   const [generatedMap, setGeneratedMap] = useState<LongevityMap | null>(null);
@@ -255,14 +256,14 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
   if (hasUnfinishedPrompt) {
     return (
       <div className="max-w-xl mx-auto py-16 px-4">
-        <div className="bg-white border border-[#2F312D]/15 rounded-3xl p-8 sm:p-10 shadow-sm text-center">
-          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#DDD6F3] flex items-center justify-center text-[#4A3B69] mb-5">
+        <div className="bg-white border border-[#879B83]/30 rounded-3xl p-8 sm:p-10 shadow-sm text-center">
+          <div className="w-14 h-14 mx-auto rounded-2xl bg-[#DFEBDE] border border-[#879B83]/40 flex items-center justify-center text-[#4F6757] mb-5">
             <Compass className="w-7 h-7" />
           </div>
-          <h2 className="text-2xl sm:text-3xl font-bold text-[#2F312D] tracking-tight">
+          <h2 className="text-2xl sm:text-3xl font-bold text-[#303530] tracking-tight">
             Parece que dejaste un mapa a medio construir.
           </h2>
-          <p className="mt-3 text-base sm:text-lg text-[#2F312D]/80 leading-relaxed">
+          <p className="mt-3 text-base sm:text-lg text-[#303530]/80 leading-relaxed">
             Guardamos tus respuestas en este dispositivo para que puedas retomar tu reflexión exactamente donde la dejaste.
           </p>
 
@@ -270,14 +271,14 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             <button
               type="button"
               onClick={handleDiscardSaved}
-              className="px-5 py-3.5 text-base font-medium text-[#2F312D]/80 hover:text-[#2F312D] hover:bg-black/5 rounded-2xl transition-colors cursor-pointer"
+              className="px-5 py-3.5 text-base font-semibold text-[#4F6757] hover:text-[#303530] hover:bg-black/5 rounded-2xl transition-colors cursor-pointer"
             >
               Comenzar de nuevo
             </button>
             <button
               type="button"
               onClick={handleContinueSaved}
-              className="px-7 py-3.5 text-base font-semibold text-white bg-[#2F312D] hover:bg-[#1E1F1C] rounded-2xl transition-all shadow-sm cursor-pointer"
+              className="px-7 py-3.5 text-base font-bold text-white bg-[#C97863] hover:bg-[#B56652] rounded-2xl transition-all shadow-md cursor-pointer"
             >
               Continuar
             </button>
@@ -291,14 +292,14 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
   if (currentStep === 9) {
     return (
       <div className="max-w-2xl mx-auto py-16 px-4 animate-in fade-in duration-300">
-        <div className="bg-white border-2 border-[#F7C6AF] rounded-3xl p-8 sm:p-12 text-center shadow-lg bg-gradient-to-b from-[#FDFBF7] to-white">
-          <div className="w-18 h-18 mx-auto rounded-3xl bg-[#FCF7E9] border-2 border-[#F4DC9A] flex items-center justify-center text-[#825509] mb-6 shadow-sm">
+        <div className="bg-white border-2 border-[#E8B89F] rounded-3xl p-8 sm:p-12 text-center shadow-lg bg-gradient-to-b from-[#FAF7F2] to-white">
+          <div className="w-18 h-18 mx-auto rounded-3xl bg-[#FCF9ED] border-2 border-[#E7D58B] flex items-center justify-center text-[#7A6615] mb-6 shadow-sm">
             <Sun className="w-9 h-9" />
           </div>
-          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#1F201D] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-[#303530] tracking-tight">
             Tus próximos años no están escritos.
           </h1>
-          <p className="mt-5 text-lg sm:text-xl text-[#2F312D]/85 leading-relaxed">
+          <p className="mt-5 text-lg sm:text-xl text-[#303530]/85 leading-relaxed">
             Lo que acabas de hacer no busca definirte ni decirte cómo deberías vivir. Es simplemente una fotografía de este momento y una invitación a pensar qué quieres construir desde aquí.
           </p>
           <div className="mt-10">
@@ -308,7 +309,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                 setCurrentStep(10);
                 saveProgress(10, responses, true);
               }}
-              className="inline-flex items-center gap-2.5 px-8 py-4 text-lg font-bold text-white bg-[#C15832] hover:bg-[#A84523] active:bg-[#913B1B] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C15832]/25 cursor-pointer"
+              className="inline-flex items-center gap-2.5 px-8 py-4 text-lg font-bold text-white bg-[#C97863] hover:bg-[#B56652] active:bg-[#A35542] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C97863]/25 cursor-pointer"
             >
               <span>Ver mi mapa</span>
               <ArrowRight className="w-5 h-5" />
@@ -356,55 +357,113 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
     return (
       <div className="py-8 px-4 sm:px-6 max-w-4xl mx-auto animate-in fade-in duration-300">
         <div className="text-center mb-10">
-          <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#2F312D]/60 block mb-2">
+          <span className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#4F6757] block mb-2">
             Paso a paso
           </span>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#2F312D] tracking-tight">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#303530] tracking-tight">
             No tienes que cambiar todo. Empecemos por algo.
           </h1>
-          <p className="mt-4 text-lg sm:text-xl text-[#2F312D]/80 max-w-2xl mx-auto leading-relaxed">
+          <p className="mt-4 text-lg sm:text-xl text-[#303530]/80 max-w-2xl mx-auto leading-relaxed">
             Tres pequeñas acciones concretas basadas en lo que hoy expresaste como prioritario para tus próximos años.
           </p>
         </div>
 
-        {/* 3 Activations Cards with warm harmonious palettes */}
-        <div className="space-y-5">
+        {/* 3 Activations Cards structured according to guideline:
+            - Nombre de la activación
+            - Breve explicación
+            - Por qué puede ser útil
+            - Acción concreta
+            - Botón para comenzar
+        */}
+        <div className="space-y-6">
           {activations.map((item, idx) => {
             const styles = [
-              { bg: '#FDF1EA', border: '#F7C6AF', numBg: '#FBDACD', text: '#A13F19' },
-              { bg: '#EDF7EE', border: '#BBE3BE', numBg: '#D2F2D5', text: '#205B32' },
-              { bg: '#EEF6FB', border: '#B6DBF5', numBg: '#D1EBFB', text: '#14517A' },
+              { bg: '#FDF5F1', border: '#E8B89F', numBg: '#F6D9CB', text: '#C97863', btnBg: '#C97863', btnHover: '#B56652' },
+              { bg: '#F2F6F1', border: '#879B83', numBg: '#DFEBDE', text: '#4F6757', btnBg: '#4F6757', btnHover: '#3D5244' },
+              { bg: '#EEF6FB', border: '#B6D6EB', numBg: '#D4E8F4', text: '#1D4F73', btnBg: '#1D4F73', btnHover: '#163E5B' },
             ][idx % 3];
 
             return (
               <div
                 key={item.id}
-                className="p-6 sm:p-8 rounded-3xl border-2 shadow-sm flex flex-col sm:flex-row items-start gap-5 transition-transform hover:-translate-y-0.5"
+                className="p-6 sm:p-8 rounded-3xl border-2 shadow-sm transition-transform hover:-translate-y-0.5"
                 style={{
                   backgroundColor: styles.bg,
                   borderColor: styles.border,
                 }}
               >
-                <div
-                  className="w-12 h-12 rounded-2xl flex items-center justify-center font-bold text-xl shrink-0 shadow-2xs border"
-                  style={{
-                    backgroundColor: styles.numBg,
-                    color: styles.text,
-                    borderColor: styles.border,
-                  }}
-                >
-                  {idx + 1}
-                </div>
-                <div className="flex-1">
-                  <span
-                    className="text-xs font-bold uppercase tracking-wider block mb-1.5"
-                    style={{ color: styles.text }}
-                  >
-                    {item.category}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-black/10">
+                  <div className="flex items-center gap-3.5">
+                    <div
+                      className="w-12 h-12 rounded-2xl flex items-center justify-center font-extrabold text-xl shrink-0 shadow-2xs border"
+                      style={{
+                        backgroundColor: styles.numBg,
+                        color: styles.text,
+                        borderColor: styles.border,
+                      }}
+                    >
+                      {idx + 1}
+                    </div>
+                    <div>
+                      <span
+                        className="text-xs font-bold uppercase tracking-wider block"
+                        style={{ color: styles.text }}
+                      >
+                        {item.category}
+                      </span>
+                      <h3 className="text-xl sm:text-2xl font-bold text-[#303530] leading-snug">
+                        {item.name}
+                      </h3>
+                    </div>
+                  </div>
+                  <span className="self-start sm:self-center text-xs font-bold px-3 py-1 rounded-full bg-white/90 border text-[#303530]" style={{ borderColor: styles.border }}>
+                    Invitación a experimentar
                   </span>
-                  <p className="text-lg sm:text-xl font-semibold text-[#1F201D] leading-relaxed">
-                    {item.actionText}
+                </div>
+
+                {/* Card body: Explanation, Why useful, Concrete action */}
+                <div className="mt-5 space-y-4 text-[#303530]">
+                  <p className="text-base sm:text-lg text-[#303530]/85 leading-relaxed">
+                    {item.explanation}
                   </p>
+
+                  <div className="p-4 rounded-2xl bg-white/80 border border-black/5 space-y-1.5">
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#4F6757] flex items-center gap-1.5">
+                      <Sparkles className="w-4 h-4 text-[#879B83]" />
+                      Por qué puede ser útil
+                    </span>
+                    <p className="text-sm sm:text-base text-[#303530]/90 leading-relaxed font-medium">
+                      {item.whyUseful}
+                    </p>
+                  </div>
+
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white border-2 shadow-2xs" style={{ borderColor: styles.border }}>
+                    <span className="text-xs font-bold uppercase tracking-wider block mb-1" style={{ color: styles.text }}>
+                      Acción concreta sugerida
+                    </span>
+                    <p className="text-base sm:text-lg font-bold text-[#303530] leading-snug">
+                      {item.concreteAction}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Card CTA */}
+                <div className="mt-6 pt-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
+                  <span className="text-xs sm:text-sm text-[#303530]/65 italic">
+                    Sin compromisos rígidos ni evaluaciones. A tu propio ritmo.
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setActiveActivationModal(item);
+                      trackEvent('clicked_activation_detail', { id: item.id });
+                    }}
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl text-base font-bold text-white transition-all shadow-sm hover:shadow-md cursor-pointer"
+                    style={{ backgroundColor: styles.btnBg }}
+                  >
+                    <span>{item.ctaText}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
             );
@@ -416,15 +475,15 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           <button
             type="button"
             onClick={() => setCurrentStep(10)}
-            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-bold text-[#2F312D] bg-white border-2 border-[#2F312D]/20 hover:bg-[#FDF1EA] hover:border-[#F7C6AF] rounded-2xl transition-colors cursor-pointer shadow-2xs"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-bold text-[#303530] bg-white border-2 border-[#879B83]/30 hover:bg-[#FDF5F1] hover:border-[#E8B89F] rounded-2xl transition-colors cursor-pointer shadow-2xs"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 text-[#4F6757]" />
             Volver a mi mapa
           </button>
           <button
             type="button"
             onClick={handlePrint}
-            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-bold text-white bg-[#C15832] hover:bg-[#A84523] active:bg-[#913B1B] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C15832]/25 cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 px-7 py-3.5 text-base font-bold text-white bg-[#C97863] hover:bg-[#B56652] active:bg-[#A35542] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C97863]/25 cursor-pointer"
           >
             Guardar o imprimir todo
           </button>
@@ -438,6 +497,24 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
 
         {/* Print template */}
         <PrintMapView map={generatedMap} activations={activations} />
+
+        {/* Modal for activation details & invitation */}
+        <Modal
+          isOpen={activeActivationModal !== null}
+          onClose={() => setActiveActivationModal(null)}
+          title={activeActivationModal?.name || 'Activación'}
+          description={
+            activeActivationModal
+              ? `${activeActivationModal.explanation}\n\n• Por qué es útil: ${activeActivationModal.whyUseful}\n\n• Acción concreta: ${activeActivationModal.concreteAction}`
+              : ''
+          }
+          primaryButtonText="Comenzar ahora"
+          onPrimaryClick={() => {
+            setActiveActivationModal(null);
+          }}
+          secondaryButtonText="Cerrar"
+          onSecondaryClick={() => setActiveActivationModal(null)}
+        />
       </div>
     );
   }
@@ -451,20 +528,20 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
       <div className="mb-8">
         <div className="flex items-center justify-between mb-3">
           <span
-            className="inline-block text-xs sm:text-sm font-semibold uppercase tracking-wider px-3 py-1 rounded-full text-[#2F312D]/80"
+            className="inline-block text-xs sm:text-sm font-semibold uppercase tracking-wider px-3 py-1 rounded-full text-[#303530]/80"
             style={{ backgroundColor: currentMeta.accentChip }}
           >
             Paso {currentStep} de 8
           </span>
-          <span className="text-xs sm:text-sm text-[#2F312D]/60 font-medium">
+          <span className="text-xs sm:text-sm text-[#303530]/60 font-medium">
             Mi Longevidad
           </span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#2F312D] tracking-tight leading-tight">
+        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#303530] tracking-tight leading-tight">
           {currentMeta.title}
         </h1>
-        <p className="mt-3 text-base sm:text-lg text-[#2F312D]/80 leading-relaxed">
+        <p className="mt-3 text-base sm:text-lg text-[#303530]/80 leading-relaxed">
           {currentMeta.subtitle}
         </p>
       </div>
@@ -475,43 +552,43 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
         {currentStep === 1 && (
           <div className="space-y-8 animate-in fade-in duration-200">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="p-5 rounded-2xl bg-white border border-[#2F312D]/15">
-                <h3 className="text-base font-bold text-[#2F312D] mb-1.5 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#4A3B69]" />
+              <div className="p-5 rounded-2xl bg-white border border-[#879B83]/30 shadow-2xs">
+                <h3 className="text-base font-bold text-[#303530] mb-1.5 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#879B83]" />
                   Mira tu presente
                 </h3>
-                <p className="text-sm sm:text-base text-[#2F312D]/80 leading-snug">
+                <p className="text-sm sm:text-base text-[#303530]/80 leading-snug">
                   Reconoce aquello que quieres conservar o cambiar.
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-white border border-[#2F312D]/15">
-                <h3 className="text-base font-bold text-[#2F312D] mb-1.5 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#2C495E]" />
+              <div className="p-5 rounded-2xl bg-white border border-[#8DB9D5]/40 shadow-2xs">
+                <h3 className="text-base font-bold text-[#303530] mb-1.5 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#8DB9D5]" />
                   Imagina lo que viene
                 </h3>
-                <p className="text-sm sm:text-base text-[#2F312D]/80 leading-snug">
+                <p className="text-sm sm:text-base text-[#303530]/80 leading-snug">
                   Piensa qué quieres que tenga más espacio en tu vida.
                 </p>
               </div>
 
-              <div className="p-5 rounded-2xl bg-white border border-[#2F312D]/15">
-                <h3 className="text-base font-bold text-[#2F312D] mb-1.5 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-[#324E2E]" />
+              <div className="p-5 rounded-2xl bg-white border border-[#E8B89F]/50 shadow-2xs">
+                <h3 className="text-base font-bold text-[#303530] mb-1.5 flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#C97863]" />
                   Activa algo
                 </h3>
-                <p className="text-sm sm:text-base text-[#2F312D]/80 leading-snug">
+                <p className="text-sm sm:text-base text-[#303530]/80 leading-snug">
                   Convierte esa reflexión en pequeños pasos concretos.
                 </p>
               </div>
             </div>
 
-            <div className="p-6 rounded-3xl bg-white border border-[#2F312D]/15">
+            <div className="p-6 rounded-3xl bg-white border border-[#879B83]/30 shadow-2xs">
               <div className="flex items-baseline justify-between mb-4">
-                <label className="text-lg font-bold text-[#2F312D] block">
+                <label className="text-lg font-bold text-[#303530] block">
                   ¿En qué etapa estás?
                 </label>
-                <span className="text-xs text-[#2F312D]/60 uppercase tracking-wider font-semibold">
+                <span className="text-xs text-[#4F6757] uppercase tracking-wider font-bold">
                   Opcional
                 </span>
               </div>
@@ -522,8 +599,8 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                     label={age}
                     selected={responses.ageStage === age}
                     onSelect={() => setResponses({ ...responses, ageStage: age })}
-                    accentBg={currentMeta.accentBg}
-                    accentBorder={currentMeta.accentBorder}
+                    accentBg="#F2F6F1"
+                    accentBorder="#879B83"
                   />
                 ))}
               </div>
@@ -536,7 +613,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Q1 */}
             <div className="space-y-3">
-              <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+              <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                 Hoy siento que existen cosas que me entusiasman, me movilizan o hacen que mi tiempo tenga sentido.
               </label>
               <div className="space-y-2.5" role="radiogroup">
@@ -554,8 +631,8 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             </div>
 
             {/* Q2 */}
-            <div className="space-y-3 pt-4 border-t border-[#2F312D]/10">
-              <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+            <div className="space-y-3 pt-4 border-t border-[#303530]/10">
+              <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                 Cuando pienso en los próximos años, siento que todavía hay cosas que quiero hacer, aportar, descubrir o construir.
               </label>
               <div className="space-y-2.5" role="radiogroup">
@@ -573,15 +650,15 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             </div>
 
             {/* Optional text input */}
-            <div className="space-y-2 pt-4 border-t border-[#2F312D]/10">
+            <div className="space-y-2 pt-4 border-t border-[#303530]/10">
               <div className="flex items-baseline justify-between">
                 <label
                   htmlFor="purpose-enthusiasm"
-                  className="text-base sm:text-lg font-bold text-[#2F312D]"
+                  className="text-base sm:text-lg font-bold text-[#303530]"
                 >
                   ¿Hay algo que hoy te entusiasme especialmente?
                 </label>
-                <span className="text-xs text-[#2F312D]/60 uppercase tracking-wider font-semibold">
+                <span className="text-xs text-[#303530]/60 uppercase tracking-wider font-semibold">
                   Opcional
                 </span>
               </div>
@@ -591,7 +668,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                 value={responses.purposeSpecialText || ''}
                 onChange={(e) => setResponses({ ...responses, purposeSpecialText: e.target.value })}
                 placeholder="Escribe lo primero que se te venga a la cabeza…"
-                className="w-full p-4 rounded-2xl bg-white border border-[#2F312D]/20 text-base sm:text-lg text-[#2F312D] placeholder:text-[#2F312D]/40 focus:border-[#2F312D] focus:ring-1 focus:ring-[#2F312D]"
+                className="w-full p-4 rounded-2xl bg-white border border-[#303530]/20 text-base sm:text-lg text-[#303530] placeholder:text-[#303530]/40 focus:border-[#303530] focus:ring-1 focus:ring-[#303530]"
               />
             </div>
           </div>
@@ -602,7 +679,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Q1 */}
             <div className="space-y-3">
-              <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+              <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                 Tengo personas con quienes puedo conversar, compartir, reír, pedir ayuda o simplemente estar.
               </label>
               <div className="space-y-2.5" role="radiogroup">
@@ -620,12 +697,12 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             </div>
 
             {/* Q2 */}
-            <div className="space-y-3 pt-4 border-t border-[#2F312D]/10">
+            <div className="space-y-3 pt-4 border-t border-[#303530]/10">
               <div>
-                <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+                <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                   ¿Qué te gustaría que ocurriera más?
                 </label>
-                <span className="text-xs sm:text-sm text-[#2F312D]/60 block mt-1">
+                <span className="text-xs sm:text-sm text-[#303530]/60 block mt-1">
                   Puedes seleccionar varias alternativas
                 </span>
               </div>
@@ -655,7 +732,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Q1 */}
             <div className="space-y-3">
-              <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+              <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                 Siento que tengo espacios donde puedo participar, aportar o sentirme parte de algo.
               </label>
               <div className="space-y-2.5" role="radiogroup">
@@ -673,12 +750,12 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             </div>
 
             {/* Q2 */}
-            <div className="space-y-3 pt-4 border-t border-[#2F312D]/10">
+            <div className="space-y-3 pt-4 border-t border-[#303530]/10">
               <div>
-                <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+                <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                   ¿Hay alguna forma en que te gustaría aportar?
                 </label>
-                <span className="text-xs sm:text-sm text-[#2F312D]/60 block mt-1">
+                <span className="text-xs sm:text-sm text-[#303530]/60 block mt-1">
                   Puedes seleccionar varias opciones
                 </span>
               </div>
@@ -709,10 +786,10 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             {/* Q1 */}
             <div className="space-y-3">
               <div>
-                <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+                <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                   ¿Hay algo que llevas tiempo queriendo aprender, retomar o probar?
                 </label>
-                <span className="text-xs sm:text-sm text-[#2F312D]/60 block mt-1">
+                <span className="text-xs sm:text-sm text-[#303530]/60 block mt-1">
                   Selección múltiple
                 </span>
               </div>
@@ -741,15 +818,15 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                     value={responses.projectsOtherText || ''}
                     onChange={(e) => setResponses({ ...responses, projectsOtherText: e.target.value })}
                     placeholder="Especifica qué te gustaría aprender o probar…"
-                    className="w-full p-4 rounded-2xl bg-white border border-[#2F312D]/20 text-base sm:text-lg text-[#2F312D] placeholder:text-[#2F312D]/40 focus:border-[#2F312D] focus:ring-1 focus:ring-[#2F312D]"
+                    className="w-full p-4 rounded-2xl bg-white border border-[#303530]/20 text-base sm:text-lg text-[#303530] placeholder:text-[#303530]/40 focus:border-[#303530] focus:ring-1 focus:ring-[#303530]"
                   />
                 </div>
               )}
             </div>
 
             {/* Q2 */}
-            <div className="space-y-3 pt-4 border-t border-[#2F312D]/10">
-              <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+            <div className="space-y-3 pt-4 border-t border-[#303530]/10">
+              <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                 ¿Qué suele pasar con esas ideas?
               </label>
               <div className="space-y-2.5" role="radiogroup">
@@ -773,7 +850,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           <div className="space-y-8 animate-in fade-in duration-200">
             {/* Q1 */}
             <div className="space-y-3">
-              <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+              <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                 Hoy mi forma de vivir se parece, en general, a cómo quiero vivir.
               </label>
               <div className="space-y-2.5" role="radiogroup">
@@ -791,12 +868,12 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             </div>
 
             {/* Q2 */}
-            <div className="space-y-3 pt-4 border-t border-[#2F312D]/10">
+            <div className="space-y-3 pt-4 border-t border-[#303530]/10">
               <div>
-                <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+                <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                   Cuando piensas en el futuro, ¿hay algo que te gustaría conservar especialmente?
                 </label>
-                <span className="text-xs sm:text-sm text-[#2F312D]/60 block mt-1">
+                <span className="text-xs sm:text-sm text-[#303530]/60 block mt-1">
                   Selección múltiple
                 </span>
               </div>
@@ -825,7 +902,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                     value={responses.autonomyOtherText || ''}
                     onChange={(e) => setResponses({ ...responses, autonomyOtherText: e.target.value })}
                     placeholder="¿Qué otra cosa te gustaría conservar especialmente?"
-                    className="w-full p-4 rounded-2xl bg-white border border-[#2F312D]/20 text-base sm:text-lg text-[#2F312D] placeholder:text-[#2F312D]/40 focus:border-[#2F312D] focus:ring-1 focus:ring-[#2F312D]"
+                    className="w-full p-4 rounded-2xl bg-white border border-[#303530]/20 text-base sm:text-lg text-[#303530] placeholder:text-[#303530]/40 focus:border-[#303530] focus:ring-1 focus:ring-[#303530]"
                   />
                 </div>
               )}
@@ -839,10 +916,10 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             {/* Q1 */}
             <div className="space-y-3">
               <div>
-                <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+                <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                   ¿Sobre cuáles de estos temas has pensado?
                 </label>
-                <span className="text-xs sm:text-sm text-[#2F312D]/60 block mt-1">
+                <span className="text-xs sm:text-sm text-[#303530]/60 block mt-1">
                   Selección múltiple
                 </span>
               </div>
@@ -866,8 +943,8 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
             </div>
 
             {/* Q2 */}
-            <div className="space-y-3 pt-4 border-t border-[#2F312D]/10">
-              <label className="text-lg sm:text-xl font-bold text-[#2F312D] block leading-snug">
+            <div className="space-y-3 pt-4 border-t border-[#303530]/10">
+              <label className="text-lg sm:text-xl font-bold text-[#303530] block leading-snug">
                 ¿Cómo te hace sentir pensar en tus próximos años?
               </label>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5" role="radiogroup">
@@ -889,16 +966,16 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
         {/* --- PASO 8: PRIORIDADES (MAX 5) --- */}
         {currentStep === 8 && (
           <div className="space-y-6 animate-in fade-in duration-200">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 rounded-3xl bg-white border-2 border-[#F7C6AF] shadow-xs">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-5 rounded-3xl bg-white border-2 border-[#E8B89F] shadow-xs">
               <div>
-                <span className="text-lg sm:text-xl font-bold text-[#1F201D]">
+                <span className="text-lg sm:text-xl font-bold text-[#303530]">
                   Elige hasta 5 prioridades
                 </span>
-                <p className="text-sm text-[#2F312D]/80 mt-0.5">
+                <p className="text-sm text-[#303530]/80 mt-0.5">
                   Selecciona aquello a lo que quieres darle mayor espacio.
                 </p>
               </div>
-              <div className="px-4 py-2 rounded-xl bg-[#FDF1EA] border-2 border-[#F7C6AF] text-[#A13F19] text-base font-extrabold tabular-nums shrink-0">
+              <div className="px-4 py-2 rounded-xl bg-[#FDF5F1] border-2 border-[#E8B89F] text-[#C97863] text-base font-extrabold tabular-nums shrink-0">
                 {(responses.priorities?.length || 0)} de 5 seleccionadas
               </div>
             </div>
@@ -919,18 +996,18 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                         priorities: toggleArrayItem(responses.priorities, opt, 5),
                       })
                     }
-                    accentBg="#FDF1EA"
-                    accentBorder="#C15832"
+                    accentBg="#FDF5F1"
+                    accentBorder="#C97863"
                   />
                 );
               })}
             </div>
 
             {responses.priorities?.includes('Algo que no aparece aquí') && (
-              <div className="p-5 rounded-2xl bg-white border-2 border-[#F7C6AF] mt-4 shadow-2xs">
+              <div className="p-5 rounded-2xl bg-white border-2 border-[#E8B89F] mt-4 shadow-2xs">
                 <label
                   htmlFor="priorities-other"
-                  className="block text-base font-bold text-[#A13F19] mb-1.5"
+                  className="block text-base font-bold text-[#C97863] mb-1.5"
                 >
                   ¿Qué prioridad te gustaría agregar?
                 </label>
@@ -940,7 +1017,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
                   value={responses.prioritiesOtherText || ''}
                   onChange={(e) => setResponses({ ...responses, prioritiesOtherText: e.target.value })}
                   placeholder="Escribe tu prioridad personalizada…"
-                  className="w-full p-4 rounded-xl bg-[#FDFBF7] border-2 border-[#F7C6AF] text-base text-[#1F201D] placeholder:text-[#2F312D]/50 focus:border-[#C15832] focus:ring-2 focus:ring-[#C15832]"
+                  className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#E8B89F] text-base text-[#303530] placeholder:text-[#303530]/50 focus:border-[#C97863] focus:ring-2 focus:ring-[#C97863]"
                 />
               </div>
             )}
@@ -952,29 +1029,29 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
       {errorMessage && (
         <div
           role="alert"
-          className="mt-6 p-4 rounded-2xl bg-[#FDF1EA] border-2 border-[#F7C6AF] text-[#A13F19] text-base font-bold flex items-center gap-3 animate-in fade-in shadow-xs"
+          className="mt-6 p-4 rounded-2xl bg-[#FDF5F1] border-2 border-[#E8B89F] text-[#C97863] text-base font-bold flex items-center gap-3 animate-in fade-in shadow-xs"
         >
-          <span className="w-2.5 h-2.5 rounded-full bg-[#C15832] shrink-0" />
+          <span className="w-2.5 h-2.5 rounded-full bg-[#C97863] shrink-0" />
           <span>{errorMessage}</span>
         </div>
       )}
 
       {/* Navigation Buttons: Anterior / Continuar */}
-      <div className="mt-10 pt-6 border-t border-[#2F312D]/15 flex items-center justify-between gap-4">
+      <div className="mt-10 pt-6 border-t border-[#879B83]/20 flex items-center justify-between gap-4">
         {currentStep > 1 ? (
           <button
             type="button"
             onClick={goToPreviousStep}
-            className="inline-flex items-center gap-2 px-5 py-3.5 text-base font-bold text-[#2F312D] hover:bg-black/5 rounded-2xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-3.5 text-base font-bold text-[#4F6757] hover:text-[#303530] hover:bg-black/5 rounded-2xl transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-5 h-5" />
+            <ArrowLeft className="w-5 h-5 text-[#4F6757]" />
             <span>Anterior</span>
           </button>
         ) : (
           <button
             type="button"
             onClick={onExit}
-            className="inline-flex items-center gap-2 px-5 py-3.5 text-base font-medium text-[#2F312D]/70 hover:text-[#2F312D] rounded-2xl transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 px-5 py-3.5 text-base font-semibold text-[#4F6757] hover:text-[#303530] rounded-2xl transition-colors cursor-pointer"
           >
             Volver al inicio
           </button>
@@ -983,7 +1060,7 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
         <button
           type="button"
           onClick={validateAndAdvance}
-          className="inline-flex items-center gap-2.5 px-8 py-4 text-lg font-bold text-white bg-[#C15832] hover:bg-[#A84523] active:bg-[#913B1B] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C15832]/25 cursor-pointer"
+          className="inline-flex items-center gap-2.5 px-8 py-4 text-lg font-bold text-white bg-[#C97863] hover:bg-[#B56652] active:bg-[#A35542] active:scale-[0.99] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C97863]/25 cursor-pointer"
         >
           <span>{currentStep === 1 ? 'Comenzar' : currentStep === 8 ? 'Construir mi mapa' : 'Continuar'}</span>
           <ArrowRight className="w-5 h-5" />

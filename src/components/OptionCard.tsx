@@ -13,8 +13,8 @@ export const OptionCard: React.FC<OptionCardProps> = ({
   label,
   selected,
   onSelect,
-  accentBg = '#F5EFFB',
-  accentBorder = '#9A5FE8',
+  accentBg = '#FDF5F1',
+  accentBorder = '#C97863',
 }) => {
   return (
     <button
@@ -22,10 +22,10 @@ export const OptionCard: React.FC<OptionCardProps> = ({
       role="radio"
       aria-checked={selected}
       onClick={onSelect}
-      className={`w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-all flex items-center justify-between gap-4 cursor-pointer focus-visible:ring-3 focus-visible:ring-[#2F312D] focus-visible:outline-none ${
+      className={`w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-all flex items-center justify-between gap-4 cursor-pointer focus-visible:ring-3 focus-visible:ring-[#4F6757] focus-visible:outline-none ${
         selected
           ? 'shadow-sm font-semibold'
-          : 'border-[#2F312D]/15 hover:border-[#2F312D]/35 bg-white/90 hover:bg-white'
+          : 'border-[#879B83]/25 hover:border-[#879B83]/60 bg-white/95 hover:bg-white'
       }`}
       style={{
         backgroundColor: selected ? accentBg : undefined,
@@ -34,14 +34,14 @@ export const OptionCard: React.FC<OptionCardProps> = ({
     >
       <span
         className={`text-base sm:text-lg leading-snug ${
-          selected ? 'text-[#1F201D] font-bold' : 'text-[#2F312D] font-medium'
+          selected ? 'text-[#303530] font-bold' : 'text-[#303530] font-medium'
         }`}
       >
         {label}
       </span>
       <div
         className={`w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors shadow-2xs ${
-          selected ? 'text-white' : 'border-[#2F312D]/25 bg-white'
+          selected ? 'text-white' : 'border-[#879B83]/40 bg-white'
         }`}
         style={{
           backgroundColor: selected ? accentBorder : undefined,

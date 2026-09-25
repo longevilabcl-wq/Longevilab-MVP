@@ -48,7 +48,11 @@ export interface LongevityMap {
 export interface ActivationItem {
   id: string;
   category: string;
-  actionText: string;
+  name: string;
+  explanation: string;
+  whyUseful: string;
+  concreteAction: string;
+  ctaText: string;
 }
 
 export interface SavedState {

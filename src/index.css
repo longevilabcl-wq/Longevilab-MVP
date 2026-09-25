@@ -1,21 +1,43 @@
 @import "tailwindcss";
 
+@theme {
+  --color-canvas: #FAF7F2;
+  --color-salvia: #879B83;
+  --color-bosque: #4F6757;
+  --color-terracota: #C97863;
+  --color-durazno: #E8B89F;
+  --color-mantequilla: #E7D58B;
+  --color-carbon: #303530;
+  --color-babyblue: #8DB9D5;
+}
+
 @layer base {
   :root {
     --font-sans: 'Plus Jakarta Sans', 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
 
+  html {
+    font-size: 17px;
+  }
+
+  @media (min-width: 640px) {
+    html {
+      font-size: 18px;
+    }
+  }
+
   body {
     font-family: var(--font-sans);
-    background-color: #F7F3EC;
-    color: #2F312D;
+    background-color: #FAF7F2;
+    color: #303530;
+    line-height: 1.55;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Accessible focus indicators */
+  /* Accessible senior-friendly focus indicators */
   :focus-visible {
-    outline: 2px solid #2F312D;
+    outline: 3px solid #4F6757;
     outline-offset: 3px;
   }
 }

@@ -85,10 +85,17 @@ export const PrintMapView: React.FC<PrintMapViewProps> = ({ map, activations = [
           <div className="space-y-3">
             {activations.map((act, idx) => (
               <div key={idx} className="p-3 border border-gray-200 rounded text-sm">
-                <span className="font-bold text-xs uppercase text-gray-600 block mb-1">
-                  {act.category}
-                </span>
-                <p className="leading-snug">{act.actionText}</p>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-bold text-xs uppercase text-gray-600">
+                    {act.category}
+                  </span>
+                  <span className="font-bold text-xs text-gray-800">
+                    {act.name}
+                  </span>
+                </div>
+                <p className="text-gray-700 leading-snug mb-1">{act.explanation}</p>
+                <p className="text-xs text-gray-600 italic mb-1.5"><strong>Por qué es útil:</strong> {act.whyUseful}</p>
+                <p className="font-semibold text-gray-900 text-sm"><strong>Acción concreta:</strong> {act.concreteAction}</p>
               </div>
             ))}
           </div>
