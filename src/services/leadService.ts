@@ -1,31 +1,61 @@
 import { LeadSubmission } from '../types';
 
+export const DEFAULT_WEBHOOK_URL =
+  'https://script.google.com/macros/s/AKfycbxzCt9Cp5L4Kx7QprE5NIc8MIsaXfn18gvoaFhjYXs8wo5Cf5iTs4AWlgfZmdQAHpkJqw/exec';
+
 const LEADS_STORAGE_KEY = 'longevilab_leads_submissions_v1';
 const WEBHOOK_STORAGE_KEY = 'longevilab_leads_webhook_url';
+const LAST_DISPATCH_KEY = 'longevilab_last_dispatch_status';
+
+export function normalizeWebhookUrl(url: string): string {
+  if (!url) return '';
+  let clean = url.trim();
+  // If the user copied the dev or edit URL from Google Apps Script, convert to /exec
+  if (clean.includes('script.google.com/macros/s/')) {
+    clean = clean.replace(/\/dev(\?.*)?$/, '/exec$1').replace(/\/edit(\?.*)?$/, '/exec$1');
+  }
+  return clean;
+}
 
 export function getWebhookUrl(): string {
-  if (typeof window === 'undefined') return '';
+  if (typeof window === 'undefined') return DEFAULT_WEBHOOK_URL;
   const stored = localStorage.getItem(WEBHOOK_STORAGE_KEY);
-  if (stored) return stored.trim();
+  if (stored) return normalizeWebhookUrl(stored);
   const envUrl = (import.meta as any).env?.VITE_LEADS_WEBHOOK_URL;
-  return (envUrl || '').trim();
+  if (envUrl) return normalizeWebhookUrl(envUrl);
+  return DEFAULT_WEBHOOK_URL;
 }
 
 export function setWebhookUrl(url: string): void {
   if (typeof window === 'undefined') return;
-  if (!url || !url.trim()) {
+  const clean = normalizeWebhookUrl(url);
+  if (!clean) {
     localStorage.removeItem(WEBHOOK_STORAGE_KEY);
   } else {
-    localStorage.setItem(WEBHOOK_STORAGE_KEY, url.trim());
+    localStorage.setItem(WEBHOOK_STORAGE_KEY, clean);
+  }
+}
+
+export function getLastDispatchStatus(): { timestamp: string; success: boolean; url: string; error?: string } | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = localStorage.getItem(LAST_DISPATCH_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch {
+    return null;
   }
 }
 
 /**
  * Dispatches a lead submission to the configured Webhook (Google Sheets Apps Script or Zapier/Make)
  */
-async function dispatchToWebhook(lead: LeadSubmission, customUrl?: string): Promise<boolean> {
-  const url = customUrl || getWebhookUrl();
-  if (!url) return false;
+export async function dispatchToWebhook(lead: LeadSubmission, customUrl?: string): Promise<boolean> {
+  const rawUrl = customUrl || getWebhookUrl();
+  const url = normalizeWebhookUrl(rawUrl);
+  if (!url) {
+    console.warn('No webhook URL configured. Lead saved only locally.');
+    return false;
+  }
 
   try {
     // Note: Google Apps Script Web Apps require 'mode: no-cors' or text/plain to avoid CORS 302 preflight issues in browsers
@@ -37,11 +67,59 @@ async function dispatchToWebhook(lead: LeadSubmission, customUrl?: string): Prom
       },
       body: JSON.stringify(lead),
     });
+
+    localStorage.setItem(
+      LAST_DISPATCH_KEY,
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        success: true,
+        url,
+      })
+    );
     return true;
-  } catch (err) {
+  } catch (err: any) {
     console.warn('Webhook dispatch failed:', err);
+    localStorage.setItem(
+      LAST_DISPATCH_KEY,
+      JSON.stringify({
+        timestamp: new Date().toISOString(),
+        success: false,
+        url,
+        error: err?.message || 'Error de conexión',
+      })
+    );
     return false;
   }
+}
+
+/**
+ * Syncs all locally stored leads to the Google Sheets webhook
+ */
+export async function syncAllLeadsToWebhook(): Promise<{ count: number; success: boolean; message: string }> {
+  const leads = getStoredLeads();
+  const url = getWebhookUrl();
+
+  if (!url) {
+    return { count: 0, success: false, message: 'No hay URL de Google Sheets configurada.' };
+  }
+
+  if (leads.length === 0) {
+    return { count: 0, success: false, message: 'No hay respuestas registradas para enviar.' };
+  }
+
+  let sent = 0;
+  for (const lead of leads) {
+    await dispatchToWebhook(lead, url);
+    sent++;
+    // small pause between calls
+    await new Promise((r) => setTimeout(r, 400));
+  }
+
+  return {
+    count: sent,
+    success: true,
+    message: `Se enviaron ${sent} respuestas a tu Google Sheet con éxito.`,
+  };
 }
 
 /**

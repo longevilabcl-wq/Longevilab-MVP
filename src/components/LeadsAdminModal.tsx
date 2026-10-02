@@ -7,6 +7,9 @@ import {
   exportLeadsToCSV,
   deleteLead,
   clearAllLeads,
+  syncAllLeadsToWebhook,
+  getLastDispatchStatus,
+  normalizeWebhookUrl,
 } from '../services/leadService';
 import { LeadSubmission } from '../types';
 import {
@@ -55,6 +58,13 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
   const [isChangingPin, setIsChangingPin] = useState(false);
   const [newPinInput, setNewPinInput] = useState('');
   const [changePinSuccess, setChangePinSuccess] = useState(false);
+
+  // Bulk sync state
+  const [syncStatus, setSyncStatus] = useState<{ loading: boolean; message: string | null; isError: boolean }>({
+    loading: false,
+    message: null,
+    isError: false,
+  });
 
   useEffect(() => {
     if (isOpen) {
@@ -124,6 +134,16 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
     setLeads(getStoredLeads());
   };
 
+  const handleSyncAll = async () => {
+    setSyncStatus({ loading: true, message: null, isError: false });
+    const result = await syncAllLeadsToWebhook();
+    setSyncStatus({
+      loading: false,
+      message: result.message,
+      isError: !result.success,
+    });
+  };
+
   const handleDeleteOne = (id: string) => {
     if (confirm('¿Eliminar este registro local?')) {
       deleteLead(id);
@@ -140,8 +160,23 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
 
   const GOOGLE_APPS_SCRIPT_CODE = `function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    var data = JSON.parse(e.postData.contents);
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    if (!ss) {
+      return ContentService.createTextOutput("Error: Abre tu Google Sheet y crea este script desde Extensiones > Apps Script.")
+        .setMimeType(ContentService.MimeType.TEXT);
+    }
+    var sheet = ss.getActiveSheet();
+    
+    var data = {};
+    if (e && e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch (parseErr) {
+        data = e.parameter || {};
+      }
+    } else if (e && e.parameter) {
+      data = e.parameter;
+    }
     
     // Si la hoja está vacía, crear encabezados automáticos
     if (sheet.getLastRow() === 0) {
@@ -160,11 +195,11 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
       sheet.getRange(1, 1, 1, 10).setFontWeight('bold').setBackground('#E8F0E7');
     }
     
-    var fecha = new Date(data.createdAt || new Date()).toLocaleString('es-CL', { timeZone: 'America/Santiago' });
+    var fecha = data.createdAt ? new Date(data.createdAt).toLocaleString('es-CL', { timeZone: 'America/Santiago' }) : new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' });
     var origen = data.source === 'mapa_longevidad' ? 'Mapa de Longevidad' : 'Contacto General';
-    var intereses = (data.interests || []).join('; ');
-    var frase = data.mapSummary ? (data.mapSummary.phrase || '') : '';
-    var prioridades = data.mapSummary && data.mapSummary.priorities ? data.mapSummary.priorities.join('; ') : '';
+    var intereses = Array.isArray(data.interests) ? data.interests.join('; ') : (data.interests || '');
+    var frase = (data.mapSummary && data.mapSummary.phrase) || data.phrase || '';
+    var prioridades = (data.mapSummary && Array.isArray(data.mapSummary.priorities)) ? data.mapSummary.priorities.join('; ') : (data.priorities || '');
     
     sheet.appendRow([
       fecha,
@@ -182,6 +217,11 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
     return ContentService.createTextOutput(JSON.stringify({ status: 'success' }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (error) {
+    try {
+      var errSheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Errores') || SpreadsheetApp.getActiveSpreadsheet().insertSheet('Errores');
+      errSheet.appendRow([new Date(), error.toString(), JSON.stringify(e || {})]);
+    } catch(ign) {}
+    
     return ContentService.createTextOutput(JSON.stringify({ status: 'error', message: error.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   }
@@ -431,7 +471,7 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
                       placeholder="https://script.google.com/macros/s/.../exec"
                       value={webhookInput}
                       onChange={(e) => setWebhookInput(e.target.value)}
-                      className="flex-1 p-3.5 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-sm text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none"
+                      className="flex-1 p-3.5 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-sm text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none font-mono text-xs sm:text-sm"
                     />
                     <button
                       type="submit"
@@ -453,6 +493,30 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
                   </div>
                 </form>
 
+                {/* Warning if URL ends in /dev or /edit */}
+                {webhookInput && (webhookInput.includes('/dev') || webhookInput.includes('/edit')) && (
+                  <div className="p-3.5 rounded-xl bg-[#FFF8EE] border border-[#F6B343] text-[#7A4B00] text-xs space-y-2">
+                    <div className="flex items-center gap-2 font-bold">
+                      <AlertCircle className="w-4 h-4 text-[#D97706] shrink-0" />
+                      <span>Atención: Tu URL termina en /dev o /edit</span>
+                    </div>
+                    <p>
+                      Google Apps Script solo permite recibir datos públicos desde la URL de producción que termina en <strong>/exec</strong>.
+                    </p>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const fixed = normalizeWebhookUrl(webhookInput);
+                        setWebhookInput(fixed);
+                        setWebhookUrl(fixed);
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-[#D97706] text-white font-bold text-xs hover:bg-[#B45309] cursor-pointer"
+                    >
+                      Corregir automáticamente a /exec y guardar
+                    </button>
+                  </div>
+                )}
+
                 {savedSuccess && (
                   <p className="text-xs font-bold text-[#4F6757] flex items-center gap-1.5">
                     <Check className="w-4 h-4" /> URL guardada exitosamente en este navegador.
@@ -471,6 +535,67 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
                     <span>{testStatus.message}</span>
                   </div>
                 )}
+
+                {/* Bulk Sync Section (Always Visible) */}
+                <div className="pt-3 border-t border-[#879B83]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 bg-[#FAF7F2] p-4 rounded-xl">
+                  <div>
+                    <p className="text-xs sm:text-sm font-bold text-[#303530]">
+                      Sincronización con Google Sheets ({leads.length} respuestas locales)
+                    </p>
+                    <p className="text-xs text-[#303530]/70">
+                      {leads.length > 0
+                        ? 'Haz clic para transferir todas las respuestas almacenadas a tu hoja de cálculo:'
+                        : 'No hay respuestas pendientes en este navegador, pero puedes enviar una de prueba:'}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={leads.length > 0 ? handleSyncAll : handleSendTest}
+                    disabled={syncStatus.loading || testStatus.loading}
+                    className="px-5 py-2.5 rounded-xl bg-[#4F6757] hover:bg-[#3D5244] text-white text-xs sm:text-sm font-bold transition-colors cursor-pointer shrink-0 disabled:opacity-50 inline-flex items-center gap-2 shadow-xs"
+                  >
+                    <Send className="w-4 h-4" />
+                    <span>
+                      {syncStatus.loading || testStatus.loading
+                        ? 'Enviando...'
+                        : leads.length > 0
+                        ? `Reenviar ${leads.length} respuestas a Google Sheets`
+                        : 'Enviar fila de prueba a Google Sheets'}
+                    </span>
+                  </button>
+                </div>
+
+                {syncStatus.message && (
+                  <div
+                    className={`p-3 rounded-xl text-xs font-medium flex items-center gap-2 ${
+                      syncStatus.isError
+                        ? 'bg-[#FDF5F1] border border-[#C97863] text-[#C97863]'
+                        : 'bg-[#DFEBDE] border border-[#879B83] text-[#4F6757]'
+                    }`}
+                  >
+                    {syncStatus.isError ? <AlertCircle className="w-4 h-4" /> : <Check className="w-4 h-4" />}
+                    <span>{syncStatus.message}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Troubleshooting Check */}
+              <div className="p-5 rounded-2xl bg-[#FDF5F1] border-2 border-[#E8B89F] space-y-3 text-xs sm:text-sm text-[#303530]">
+                <div className="flex items-center gap-2 text-base font-bold text-[#C97863]">
+                  <AlertCircle className="w-5 h-5 shrink-0" />
+                  <h4>¿Por qué podría no aparecer la fila en Google Sheets? (Checklist de 3 puntos)</h4>
+                </div>
+                <div className="space-y-2 text-[#303530]/85 leading-relaxed pl-1">
+                  <p>
+                    <strong>1. Permiso "Quién tiene acceso" (Causa #1):</strong> En Google Apps Script, al hacer clic en <em>Implementar &gt; Administrar implementaciones &gt; Editar</em>, el campo <strong>“Quién tiene acceso”</strong> DEBE decir <strong>“Cualquier usuario”</strong> (o <em>Anyone</em>). Si dice “Solo yo”, Google bloqueará silenciosamente el envío.
+                  </p>
+                  <p>
+                    <strong>2. “Ejecutar como”:</strong> Debe decir <strong>“Yo”</strong> (tu cuenta <code>longevilab.cl@gmail.com</code>).
+                  </p>
+                  <p>
+                    <strong>3. Nueva versión si editaste el código:</strong> En Google Apps Script, cada vez que cambias el código, debes hacer clic en <em>Implementar &gt; Administrar implementaciones &gt; Editar &gt; Versión: “Nueva versión” &gt; Implementar</em>. De lo contrario, Google sigue ejecutando la versión vieja.
+                  </p>
+                </div>
               </div>
 
               {/* Instructions 5-Step Guide */}
@@ -535,8 +660,17 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
                     <>
                       <button
                         type="button"
+                        onClick={handleSyncAll}
+                        disabled={syncStatus.loading}
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#4F6757] hover:bg-[#3D5244] text-white text-xs font-bold transition-colors cursor-pointer shadow-xs disabled:opacity-50"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>{syncStatus.loading ? 'Sincronizando...' : 'Reenviar a Google Sheets'}</span>
+                      </button>
+                      <button
+                        type="button"
                         onClick={exportLeadsToCSV}
-                        className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#4F6757] hover:bg-[#3D5244] text-white text-xs font-bold transition-colors cursor-pointer"
+                        className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-[#879B83]/40 hover:bg-[#FAF7F2] text-[#4F6757] text-xs font-bold transition-colors cursor-pointer"
                       >
                         <Download className="w-3.5 h-3.5" />
                         <span>Descargar Excel (CSV)</span>
