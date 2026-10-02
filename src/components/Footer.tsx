@@ -1,11 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ViewType } from '../types';
 
 interface FooterProps {
   onNavigate: (view: ViewType) => void;
+  onOpenAdmin?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
+export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
+  const [adminClicks, setAdminClicks] = useState(0);
+
+  const handleCopyrightClick = () => {
+    const next = adminClicks + 1;
+    setAdminClicks(next);
+    if (next >= 3) {
+      setAdminClicks(0);
+      if (onOpenAdmin) onOpenAdmin();
+    } else {
+      setTimeout(() => setAdminClicks(0), 1200);
+    }
+  };
+
   return (
     <footer className="border-t border-[#879B83]/20 bg-[#FAF7F2] py-14 px-4 sm:px-8 mt-auto no-print">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between gap-10">
@@ -94,7 +108,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate }) => {
         <p className="max-w-2xl leading-relaxed">
           <strong className="text-[#303530]">Nota importante:</strong> Mi Longevidad es una herramienta de reflexión y orientación personal. No corresponde a una evaluación clínica ni médica.
         </p>
-        <p className="whitespace-nowrap font-medium">
+        <p
+          onClick={handleCopyrightClick}
+          className="whitespace-nowrap font-medium select-none cursor-default"
+          title=""
+        >
           © {new Date().getFullYear()} LongeviLab.
         </p>
       </div>

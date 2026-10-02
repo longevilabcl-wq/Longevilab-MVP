@@ -4,19 +4,24 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { HomePage } from './pages/HomePage';
 import { AboutPage } from './pages/AboutPage';
+import { ContactPage } from './pages/ContactPage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { QuestionnaireStepper } from './components/QuestionnaireStepper';
+import { LeadsAdminModal } from './components/LeadsAdminModal';
 
 export default function App() {
   const [currentView, setCurrentView] = useState<ViewType>('home');
   const [isStepperActive, setIsStepperActive] = useState<boolean>(false);
   const [stepperStep, setStepperStep] = useState<number>(1);
+  const [isAdminModalOpen, setIsAdminModalOpen] = useState<boolean>(false);
 
   // Sync view from window hash on initial mount and hash changes
   useEffect(() => {
     const handleHash = () => {
       const hash = window.location.hash.replace('#', '');
-      if (hash === 'mi-longevidad') {
+      if (hash === 'admin' || hash === 'equipo' || hash === 'leads') {
+        setIsAdminModalOpen(true);
+      } else if (hash === 'mi-longevidad') {
         setCurrentView('mi-longevidad');
       } else if (hash === 'sobre-longevilab') {
         setCurrentView('sobre-longevilab');
@@ -35,7 +40,20 @@ export default function App() {
 
     handleHash();
     window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+
+    // Keyboard shortcut for administrator: Ctrl+Shift+A or Cmd+Shift+A
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        setIsAdminModalOpen(true);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      window.removeEventListener('hashchange', handleHash);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const navigateTo = useCallback((view: ViewType) => {
@@ -57,6 +75,14 @@ export default function App() {
   const handleExitStepper = useCallback(() => {
     navigateTo('home');
   }, [navigateTo]);
+
+  const handleCloseAdminModal = useCallback(() => {
+    setIsAdminModalOpen(false);
+    const hash = window.location.hash.replace('#', '');
+    if (hash === 'admin' || hash === 'equipo' || hash === 'leads') {
+      window.location.hash = currentView === 'home' ? '' : currentView;
+    }
+  }, [currentView]);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#FAF7F2] text-[#303530]">
@@ -96,14 +122,23 @@ export default function App() {
         )}
 
         {currentView === 'contacto' && (
-          <PlaceholderPage type="contacto" onNavigate={navigateTo} />
+          <ContactPage onNavigate={navigateTo} />
         )}
       </main>
 
       {/* Quiet Accessible Footer (hidden during questionnaire step 1-8 to eliminate distraction) */}
       {(!isStepperActive || currentView !== 'mi-longevidad') && (
-        <Footer onNavigate={navigateTo} />
+        <Footer
+          onNavigate={navigateTo}
+          onOpenAdmin={() => setIsAdminModalOpen(true)}
+        />
       )}
+
+      {/* Admin Leads & Google Sheets Modal */}
+      <LeadsAdminModal
+        isOpen={isAdminModalOpen}
+        onClose={handleCloseAdminModal}
+      />
     </div>
   );
 }

@@ -61,3 +61,21 @@ export interface SavedState {
   updatedAt: string;
   isComplete: boolean;
 }
+
+export interface LeadSubmission {
+  id: string;
+  createdAt: string;
+  source: 'mapa_longevidad' | 'contacto_general';
+  name: string;
+  email: string;
+  phone?: string;
+  region?: string;
+  interests?: string[];
+  message?: string;
+  mapSummary?: {
+    date: string;
+    phrase: string;
+    priorities: string[];
+    importantThemes: string[];
+  };
+}

@@ -22,6 +22,7 @@ import { LongevityMapCard } from './LongevityMapCard';
 import { EcosystemSection } from './EcosystemSection';
 import { PrintMapView } from './PrintMapView';
 import { Modal } from './Modal';
+import { MapLeadForm } from './MapLeadForm';
 import { generateLongevityMap, generateActivations } from '../services/mapEngine';
 import { loadSavedProgress, saveProgress, clearProgress } from '../services/storage';
 import { trackEvent } from '../services/analytics';
@@ -487,6 +488,11 @@ export const QuestionnaireStepper: React.FC<QuestionnaireStepperProps> = ({
           >
             Guardar o imprimir todo
           </button>
+        </div>
+
+        {/* Lead capture form on activations */}
+        <div className="mt-12">
+          <MapLeadForm map={generatedMap} />
         </div>
 
         {/* Ecosystem Section */}

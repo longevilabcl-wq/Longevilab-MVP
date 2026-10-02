@@ -109,6 +109,17 @@ export const Header: React.FC<HeaderProps> = ({
           >
             Qué es LongeviLab
           </button>
+          <button
+            type="button"
+            onClick={() => onNavigate('contacto')}
+            className={`transition-colors py-1 cursor-pointer border-b-2 ${
+              currentView === 'contacto'
+                ? 'border-[#C97863] text-[#303530] font-bold'
+                : 'border-transparent text-[#303530]/80 hover:text-[#4F6757]'
+            }`}
+          >
+            Contacto
+          </button>
         </nav>
 
         {/* Zone 3: Primary action button */}
@@ -174,6 +185,18 @@ export const Header: React.FC<HeaderProps> = ({
             }`}
           >
             Qué es LongeviLab
+          </button>
+          <button
+            type="button"
+            onClick={() => {
+              onNavigate('contacto');
+              setMobileMenuOpen(false);
+            }}
+            className={`text-left text-lg py-2.5 px-3 rounded-lg font-medium transition-colors ${
+              currentView === 'contacto' ? 'bg-[#879B83]/15 font-bold text-[#303530]' : 'text-[#303530]'
+            }`}
+          >
+            Contacto
           </button>
           <div className="pt-2">
             <button

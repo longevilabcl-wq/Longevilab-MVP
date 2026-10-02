@@ -13,8 +13,6 @@ export const OptionCard: React.FC<OptionCardProps> = ({
   label,
   selected,
   onSelect,
-  accentBg = '#FDF5F1',
-  accentBorder = '#C97863',
 }) => {
   return (
     <button
@@ -22,34 +20,30 @@ export const OptionCard: React.FC<OptionCardProps> = ({
       role="radio"
       aria-checked={selected}
       onClick={onSelect}
-      className={`w-full text-left p-4 sm:p-5 rounded-2xl border-2 transition-all flex items-center justify-between gap-4 cursor-pointer focus-visible:ring-3 focus-visible:ring-[#4F6757] focus-visible:outline-none ${
+      className={`group w-full text-left p-5 sm:p-6 rounded-2xl border-2 transition-all duration-200 flex items-center justify-between gap-6 cursor-pointer focus-visible:ring-3 focus-visible:ring-[#4F6757] focus-visible:outline-none ${
         selected
-          ? 'shadow-sm font-semibold'
-          : 'border-[#879B83]/25 hover:border-[#879B83]/60 bg-white/95 hover:bg-white'
+          ? 'bg-[#FDF5F1] border-[#C97863] shadow-xs'
+          : 'bg-[#FAF7F2] border-[#879B83]/20 hover:border-[#879B83]/60 hover:bg-[#F4F1EB]'
       }`}
-      style={{
-        backgroundColor: selected ? accentBg : undefined,
-        borderColor: selected ? accentBorder : undefined,
-      }}
     >
       <span
-        className={`text-base sm:text-lg leading-snug ${
-          selected ? 'text-[#303530] font-bold' : 'text-[#303530] font-medium'
+        className={`text-lg sm:text-xl leading-snug transition-colors ${
+          selected
+            ? 'text-[#292D2A] font-bold'
+            : 'text-[#292D2A]/85 font-medium group-hover:text-[#292D2A]'
         }`}
       >
         {label}
       </span>
       <div
-        className={`w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-colors shadow-2xs ${
-          selected ? 'text-white' : 'border-[#879B83]/40 bg-white'
+        className={`w-7 h-7 rounded-full border-2 flex items-center justify-center shrink-0 transition-all duration-200 ${
+          selected
+            ? 'bg-[#C97863] border-[#C97863] text-white scale-105'
+            : 'border-[#879B83]/40 bg-white group-hover:border-[#879B83]'
         }`}
-        style={{
-          backgroundColor: selected ? accentBorder : undefined,
-          borderColor: selected ? accentBorder : undefined,
-        }}
         aria-hidden="true"
       >
-        {selected && <Check className="w-4 h-4 stroke-[3]" />}
+        {selected && <Check className="w-4 h-4 stroke-[3] animate-in zoom-in-50 duration-150" />}
       </div>
     </button>
   );

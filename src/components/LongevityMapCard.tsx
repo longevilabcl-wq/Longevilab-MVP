@@ -1,6 +1,7 @@
 import React from 'react';
 import { LongevityMap } from '../types';
 import { Sparkles, Printer, ArrowRight, RotateCcw, ShieldCheck, HeartHandshake, Compass, Bookmark } from 'lucide-react';
+import { MapLeadForm } from './MapLeadForm';
 
 interface LongevityMapCardProps {
   map: LongevityMap;
@@ -188,6 +189,11 @@ export const LongevityMapCard: React.FC<LongevityMapCardProps> = ({
             <ArrowRight className="w-5 h-5" />
           </button>
         </div>
+      </div>
+
+      {/* Warm, 100% Optional Lead Capture Form */}
+      <div className="pt-6">
+        <MapLeadForm map={map} />
       </div>
     </div>
   );

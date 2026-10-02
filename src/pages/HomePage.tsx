@@ -341,14 +341,19 @@ export const HomePage: React.FC<HomePageProps> = ({ onNavigate }) => {
         </div>
       </section>
 
-      {/* Upcoming notice modal */}
+      {/* Upcoming notice modal with CTA to Contact */}
       <Modal
         isOpen={activationModalOpen}
         onClose={() => setActivationModalOpen(false)}
         title="Estamos construyendo esta experiencia."
-        description="Próximamente podrás explorar oportunidades desde aquí."
-        primaryButtonText="Entendido"
-        onPrimaryClick={() => setActivationModalOpen(false)}
+        description="Próximamente podrás explorar convocatorias, talleres y actividades directamente desde aquí. Si te interesa que te avisemos o quieres proponer una actividad, escríbenos a través de nuestro formulario de contacto."
+        primaryButtonText="Escribir a LongeviLab"
+        onPrimaryClick={() => {
+          setActivationModalOpen(false);
+          onNavigate('contacto');
+        }}
+        secondaryButtonText="Cerrar"
+        onSecondaryClick={() => setActivationModalOpen(false)}
       />
     </div>
   );

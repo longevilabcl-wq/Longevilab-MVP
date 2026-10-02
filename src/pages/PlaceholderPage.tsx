@@ -11,51 +11,56 @@ export const PlaceholderPage: React.FC<PlaceholderPageProps> = ({ type, onNaviga
   const isPrivacy = type === 'privacidad';
 
   return (
-    <div className="py-12 sm:py-20 px-4 sm:px-8 max-w-2xl mx-auto">
-      <div className="bg-white border border-[#879B83]/25 rounded-3xl p-8 sm:p-12 shadow-sm">
-        <div className="w-14 h-14 rounded-2xl bg-[#F2F6F1] border border-[#879B83]/30 flex items-center justify-center text-[#4F6757] mb-6 shadow-2xs">
-          {isPrivacy ? <Shield className="w-7 h-7" /> : <Mail className="w-7 h-7" />}
+    <div className="py-20 sm:py-28 px-6 sm:px-12 max-w-3xl mx-auto animate-in fade-in duration-300">
+      <div className="space-y-8">
+        <div className="flex items-center gap-3">
+          <span className="w-8 h-8 rounded-full bg-[#DFEBDE] text-[#4F6757] flex items-center justify-center">
+            {isPrivacy ? <Shield className="w-4 h-4" /> : <Mail className="w-4 h-4" />}
+          </span>
+          <span className="text-xs uppercase tracking-widest text-[#879B83] font-bold">
+            {isPrivacy ? 'Privacidad' : 'Contacto'}
+          </span>
         </div>
 
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-[#303530] tracking-tight">
+        <h1 className="text-3xl sm:text-5xl font-extrabold text-[#292D2A] tracking-tight">
           {isPrivacy ? 'Privacidad y Confidencialidad' : 'Contacto con LongeviLab'}
         </h1>
 
-        <div className="mt-6 space-y-4 text-base sm:text-lg text-[#303530]/80 leading-relaxed">
+        <div className="space-y-6 text-base sm:text-lg text-[#292D2A]/85 leading-relaxed font-light border-t border-[#879B83]/20 pt-8">
           {isPrivacy ? (
             <>
               <p>
-                En esta primera versión (MVP) de LongeviLab, la experiencia <strong>Mi Longevidad</strong> es totalmente anónima.
+                En esta versión de <strong>LongeviLab</strong>, la experiencia <em>Mi Longevidad</em> es 100% anónima y personal.
               </p>
               <p>
-                No solicitamos tu nombre, RUT, teléfono, información médica ni datos personales sensibles. Tus respuestas se almacenan únicamente de manera local en tu propio navegador (localStorage) para permitirte completar tu mapa sin interrupciones.
+                No solicitamos tu nombre, RUT, teléfono, información médica ni datos personales sensibles. Tus respuestas se almacenan únicamente de manera local en tu propio navegador para permitirte explorar y revisar tu mapa a tu propio ritmo.
               </p>
-              <p className="text-sm text-[#303530]/60 pt-2">
-                La política de privacidad completa y formal estará disponible próximamente conforme se habiliten nuevas funcionalidades del ecosistema.
+              <p className="text-sm text-[#292D2A]/60 pt-2 font-mono">
+                LongeviLab · Compromiso ético con la privacidad y la autonomía digital.
               </p>
             </>
           ) : (
             <>
               <p>
-                LongeviLab está en etapa de validación de su MVP inicial.
+                LongeviLab es un laboratorio de innovación en desarrollo continuo.
               </p>
               <p>
-                Estamos preparando los canales de atención y retroalimentación institucional. Los canales de contacto oficiales estarán disponibles próximamente.
+                Si tienes consultas, interés en colaborar en investigación o participar en nuestros programas piloto, puedes escribirnos directamente a nuestro equipo de coordinación.
               </p>
-              <p className="text-sm text-[#303530]/60 pt-2">
-                Agradecemos tu interés en ser parte de la conversación sobre cómo construimos una longevidad con sentido.
+              <p className="text-sm text-[#292D2A]/60 pt-2 font-mono">
+                longevilab.cl@gmail.com · Santiago, Chile
               </p>
             </>
           )}
         </div>
 
-        <div className="mt-10 pt-6 border-t border-[#879B83]/20">
+        <div className="pt-8 border-t border-[#879B83]/20">
           <button
             type="button"
             onClick={() => onNavigate('home')}
-            className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-base font-semibold text-[#4F6757] hover:text-[#303530] hover:bg-[#F2F6F1] transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 text-sm font-bold text-[#4F6757] hover:text-[#292D2A] transition-colors cursor-pointer"
           >
-            <ArrowLeft className="w-4 h-4 text-[#4F6757]" />
+            <ArrowLeft className="w-4 h-4" />
             <span>Volver al inicio</span>
           </button>
         </div>

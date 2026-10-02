@@ -1,105 +1,121 @@
 import React from 'react';
 import { ViewType } from '../types';
-import { ArrowRight, Check, Sparkles, Heart, Users, Compass, BookOpen, Palette, Shield } from 'lucide-react';
+import { ArrowRight, Sparkles, Activity, Cpu, Users, Compass, Award, Layers } from 'lucide-react';
 
 interface AboutPageProps {
   onNavigate: (view: ViewType) => void;
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ onNavigate }) => {
-  const PILLARS = [
-    { title: 'Propósito', desc: 'Reconectar con aquello que le da sentido a los días y moviliza nuestras energías.', icon: Sparkles, bg: '#FDF5F1', border: '#E8B89F', text: '#C97863' },
-    { title: 'Vínculos', desc: 'Cuidar las relaciones significativas, nutrir nuevas amistades y compartir entre generaciones.', icon: Users, bg: '#EEF6FB', border: '#B6D6EB', text: '#1D4F73' },
-    { title: 'Autonomía', desc: 'Preservar la capacidad de decidir cómo, dónde y con quién queremos vivir.', icon: Compass, bg: '#F2F6F1', border: '#879B83', text: '#4F6757' },
-    { title: 'Participación', desc: 'Contar con espacios para aportar desde la propia experiencia y ser parte de una comunidad.', icon: Heart, bg: '#F2F6F1', border: '#879B83', text: '#4F6757' },
-    { title: 'Aprendizaje', desc: 'Mantener viva la curiosidad intelectual, adquiriendo nuevos saberes y destrezas.', icon: BookOpen, bg: '#FCF9ED', border: '#E7D58B', text: '#7A6615' },
-    { title: 'Proyectos', desc: 'Emprender, crear y darle vida a iniciativas personales a cualquier edad.', icon: Palette, bg: '#FDF5F1', border: '#E8B89F', text: '#C97863' },
-    { title: 'Preparación para el futuro', desc: 'Conversar y tomar decisiones con tiempo, cuidando nuestro bienestar y el de quienes nos rodean.', icon: Shield, bg: '#EEF6FB', border: '#B6D6EB', text: '#1D4F73' },
+  const DIMENSIONS = [
+    { name: 'Vitalidad', icon: Activity, desc: 'Salud física, autonomía funcional, nutrición y descanso reparador.' },
+    { name: 'Cognición', icon: Cpu, desc: 'Curiosidad intelectual, aprendizaje continuo, plasticidad y adaptación tecnológica.' },
+    { name: 'Conexión', icon: Users, desc: 'Vínculos significativos, redes comunitarias y puentes intergeneracionales.' },
+    { name: 'Continuidad', icon: Compass, desc: 'Sentido de trayectoria, historia personal e integración biográfica.' },
+    { name: 'Contribución', icon: Award, desc: 'Mentoría, voluntariado, proyectos productivos y transmisión de legado.' },
+    { name: 'Contexto', icon: Layers, desc: 'Vivienda adecuada, entorno accesible, seguridad financiera y políticas públicas.' },
   ];
 
   return (
-    <div className="py-10 sm:py-16 px-4 sm:px-8 max-w-4xl mx-auto space-y-16 animate-in fade-in duration-200">
-      {/* Header */}
-      <div className="space-y-4">
-        <span className="inline-block text-xs sm:text-sm font-bold uppercase tracking-wider px-3.5 py-1.5 rounded-full bg-[#FDF5F1] border border-[#E8B89F] text-[#C97863]">
-          Sobre LongeviLab
+    <div className="py-16 sm:py-28 px-6 sm:px-12 lg:px-20 max-w-6xl mx-auto space-y-24 animate-in fade-in duration-300">
+      {/* Editorial Header */}
+      <div className="max-w-4xl space-y-8">
+        <span className="text-xs uppercase tracking-widest text-[#879B83] font-bold block">
+          Sobre LongeviLab · Manifiesto y Enfoque
         </span>
-        <h1 className="text-3xl sm:text-5xl font-extrabold text-[#303530] tracking-tight leading-tight">
+        <h1 className="text-4xl sm:text-6xl font-extrabold text-[#292D2A] tracking-[-0.03em] leading-[1.1] text-balance">
           ¿Cómo queremos vivir una vida más larga?
         </h1>
-        <p className="text-xl sm:text-2xl text-[#303530]/85 leading-relaxed font-normal pt-2">
-          LongeviLab nace de una idea simple: vivir más años también nos invita a pensar cómo queremos vivirlos.
+        <p className="text-2xl sm:text-3xl font-editorial italic text-[#4F6757] leading-relaxed">
+          LongeviLab nace de una certeza: vivir más años no es solo un logro de la medicina, sino una invitación a reinventar cómo construimos nuestro futuro.
         </p>
       </div>
 
-      {/* Philosophy Card */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-[#F2F6F1] border-2 border-[#879B83] space-y-4 shadow-sm">
-        <h2 className="text-2xl sm:text-3xl font-extrabold text-[#4F6757] italic">
+      {/* Narrative Pause */}
+      <div className="py-12 px-8 sm:px-12 bg-[#F4F1EB] rounded-3xl border border-[#879B83]/20 space-y-4">
+        <p className="text-xs font-mono uppercase tracking-widest text-[#879B83]">
+          Principio rector
+        </p>
+        <blockquote className="text-2xl sm:text-4xl font-editorial italic text-[#292D2A] leading-snug">
           “La vejez no se improvisa, se construye día a día.”
-        </h2>
-        <p className="text-base sm:text-lg text-[#303530]/90 leading-relaxed">
-          No significa que podamos controlar todo lo que ocurrirá. Significa que podemos conversar, elegir, preparar y seguir construyendo nuestra vida a lo largo del tiempo.
+        </blockquote>
+        <p className="text-base text-[#292D2A]/80 font-light max-w-2xl pt-2">
+          No significa controlar cada variable del porvenir. Significa abrir conversaciones sinceras, tomar decisiones informadas antes de que sean urgencias, y mantener encendida la capacidad de asombro.
         </p>
       </div>
 
-      {/* Focus Areas */}
-      <div className="space-y-6">
-        <h3 className="text-2xl sm:text-3xl font-extrabold text-[#303530]">
-          Dimensiones para pensar nuestra longevidad
-        </h3>
-        <p className="text-base sm:text-lg text-[#303530]/80 leading-relaxed">
-          En LongeviLab exploramos nuevas formas de reflexionar y proyectar:
-        </p>
+      {/* Narrative Section: Laboratorio de Innovación */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        <div className="lg:col-span-5 space-y-4">
+          <span className="text-xs uppercase tracking-widest text-[#C97863] font-bold">
+            Identidad
+          </span>
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-[#292D2A] tracking-tight">
+            Un laboratorio vivo, no una clínica geriátrica.
+          </h2>
+        </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {PILLARS.map((p, idx) => {
-            const IconComp = p.icon;
+        <div className="lg:col-span-7 space-y-6 text-base sm:text-lg text-[#292D2A]/85 font-light leading-relaxed">
+          <p>
+            Rechazamos los estereotipos que asocian el envejecimiento únicamente con la fragilidad, el deterioro o el retiro pasivo. Creemos que una persona a los 65 o 75 años puede estar comenzando su proyecto más inspirador.
+          </p>
+          <p>
+            LongeviLab opera en la intersección entre diseño editorial, investigación científica, ciencias sociales y bienestar, creando espacios donde personas de cualquier edad pueden planificar su curso de vida con autonomía y optimismo.
+          </p>
+        </div>
+      </div>
+
+      {/* Dimensions Minimalist Grid */}
+      <div className="space-y-12 border-t border-[#879B83]/20 pt-16">
+        <div>
+          <span className="text-xs uppercase tracking-widest text-[#879B83] font-bold block mb-2">
+            Marco Conceptual
+          </span>
+          <h3 className="text-2xl sm:text-4xl font-extrabold text-[#292D2A] tracking-tight">
+            Seis dimensiones para una longevidad con propósito
+          </h3>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {DIMENSIONS.map((dim, idx) => {
+            const IconComp = dim.icon;
             return (
-              <div
-                key={idx}
-                className="p-5 rounded-2xl border-2 flex items-start gap-4 shadow-2xs transition-transform hover:-translate-y-0.5"
-                style={{
-                  backgroundColor: p.bg,
-                  borderColor: p.border,
-                }}
-              >
-                <div
-                  className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shrink-0 mt-0.5 shadow-2xs border"
-                  style={{ color: p.text, borderColor: p.border }}
-                >
-                  <IconComp className="w-5 h-5 stroke-[2.3]" />
+              <div key={idx} className="space-y-3 pb-6 border-b border-[#292D2A]/15">
+                <div className="flex items-center gap-3">
+                  <IconComp className="w-5 h-5 text-[#4F6757] stroke-[1.8]" />
+                  <h4 className="text-xl font-bold text-[#292D2A]">{dim.name}</h4>
                 </div>
-                <div>
-                  <h4 className="text-lg font-bold text-[#303530] mb-1">
-                    {p.title}
-                  </h4>
-                  <p className="text-sm sm:text-base text-[#303530]/80 leading-relaxed">
-                    {p.desc}
-                  </p>
-                </div>
+                <p className="text-sm text-[#292D2A]/75 leading-relaxed font-light">
+                  {dim.desc}
+                </p>
               </div>
             );
           })}
         </div>
       </div>
 
-      {/* Experience CTA */}
-      <div className="p-8 sm:p-10 rounded-3xl bg-gradient-to-br from-[#FDF5F1] via-[#FAF7F2] to-[#EEF6FB] border-2 border-[#879B83]/40 shadow-md flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-        <div className="space-y-2 max-w-xl">
-          <h3 className="text-xl sm:text-2xl font-extrabold text-[#303530]">
-            Comienza hoy por tu propia reflexión
+      {/* Callout */}
+      <div className="p-10 sm:p-14 rounded-3xl bg-[#FAF7F2] border-2 border-[#879B83]/30 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+        <div className="space-y-3 max-w-xl">
+          <span className="text-xs uppercase tracking-widest text-[#C97863] font-bold flex items-center gap-1.5">
+            <Sparkles className="w-4 h-4 text-[#C97863]" />
+            Experiencia Abierta
+          </span>
+          <h3 className="text-2xl sm:text-3xl font-extrabold text-[#292D2A]">
+            Comienza por tu propia reflexión.
           </h3>
-          <p className="text-base text-[#303530]/85">
-            Descubre tu Mapa de Longevidad en aproximadamente 10 minutos. Una experiencia personal y guiada.
+          <p className="text-base text-[#292D2A]/80 font-light">
+            Explora la herramienta interactiva <strong>Mi Longevidad</strong> y genera tu mapa personal.
           </p>
         </div>
+
         <button
           type="button"
           onClick={() => onNavigate('mi-longevidad')}
-          className="inline-flex items-center gap-2 px-7 py-3.5 text-base sm:text-lg font-bold text-white bg-[#C97863] hover:bg-[#B56652] active:bg-[#A35542] rounded-2xl transition-all shadow-md hover:shadow-lg shadow-[#C97863]/25 cursor-pointer whitespace-nowrap"
+          className="px-8 py-4 text-base font-bold text-white bg-[#C97863] hover:bg-[#B56652] active:bg-[#A35542] rounded-full transition-all shadow-sm hover:shadow cursor-pointer flex items-center gap-2 whitespace-nowrap"
         >
-          <span>Construir mi mapa</span>
-          <ArrowRight className="w-5 h-5" />
+          <span>Explorar Mi Longevidad</span>
+          <ArrowRight className="w-4 h-4" />
         </button>
       </div>
     </div>
