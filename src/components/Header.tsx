@@ -34,6 +34,7 @@ export const Header: React.FC<HeaderProps> = ({
               aria-label="Salir del recorrido y volver al inicio"
             >
               <ArrowLeft className="w-5 h-5 text-[#4F6757]" />
+              <img src="/favicon.svg" alt="" className="w-6 h-6 rounded-md border border-[#303530]/10 object-contain shadow-xs" aria-hidden="true" />
               <span className="font-bold text-lg tracking-tight text-[#303530]">LongeviLab</span>
             </button>
           </div>
@@ -65,10 +66,13 @@ export const Header: React.FC<HeaderProps> = ({
             onNavigate('home');
             setMobileMenuOpen(false);
           }}
-          className="text-2xl font-bold tracking-tight text-[#303530] hover:opacity-85 transition-opacity text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-[#4F6757] rounded-lg p-1 flex items-center gap-1.5"
+          className="text-2xl font-bold tracking-tight text-[#303530] hover:opacity-85 transition-opacity text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-[#4F6757] rounded-lg p-1 flex items-center gap-2.5"
         >
-          <span>LongeviLab</span>
-          <span className="w-2.5 h-2.5 rounded-full bg-[#C97863]" aria-hidden="true" />
+          <img src="/favicon.svg" alt="LongeviLab" className="w-8 h-8 rounded-lg border border-[#303530]/10 object-contain shadow-xs" />
+          <span className="flex items-center gap-1.5">
+            <span>LongeviLab</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-[#C97863]" aria-hidden="true" />
+          </span>
         </button>
 
         {/* Zone 2: Clean navigation links */}

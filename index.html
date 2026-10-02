@@ -3,17 +3,65 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LongeviLab — La vejez no se improvisa, se construye día a día</title>
+    <title>LongeviLab</title>
     <meta name="description" content="Ecosistema de innovación en longevidad. Diseña y activa cómo quieres vivir los próximos años con la experiencia Mi Longevidad." />
-    <meta property="og:title" content="LongeviLab — La vejez no se improvisa, se construye día a día" />
+    <meta name="application-name" content="LongeviLab" />
+    <meta name="apple-mobile-web-app-title" content="LongeviLab" />
+
+    <!-- Favicon & Icons (Google Search snippets, mobile & desktop) -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#4F6757" />
+
+    <!-- Open Graph & Social Cards -->
+    <meta property="og:site_name" content="LongeviLab" />
+    <meta property="og:title" content="LongeviLab" />
     <meta property="og:description" content="Ecosistema de innovación en longevidad. Diseña y activa cómo quieres vivir los próximos años con la experiencia Mi Longevidad." />
     <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:image" content="/favicon-512x512.png" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="LongeviLab" />
+    <meta name="twitter:description" content="Ecosistema de innovación en longevidad. Diseña y activa cómo quieres vivir los próximos años con la experiencia Mi Longevidad." />
+    <meta name="twitter:image" content="/favicon-512x512.png" />
+
+    <!-- Google Structured Data for Site Name and Organization Logo -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "/#website",
+          "name": "LongeviLab",
+          "alternateName": ["LongeviLab"],
+          "description": "Ecosistema de innovación en longevidad. Diseña y activa cómo quieres vivir los próximos años con la experiencia Mi Longevidad."
+        },
+        {
+          "@type": "Organization",
+          "@id": "/#organization",
+          "name": "LongeviLab",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "/favicon-512x512.png",
+            "width": 512,
+            "height": 512
+          }
+        }
+      ]
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..700&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,300..800&family=Plus+Jakarta+Sans:ital,wght@0,400..800;1,400..800&display=swap" rel="stylesheet">
   </head>
-  <body class="bg-[#FAF7F2] text-[#292D2A] antialiased selection:bg-[#E8B89F]/30 selection:text-[#292D2A]">
+  <body class="bg-[#FAF7F2] text-[#303530] antialiased selection:bg-[#B5D5E6] selection:text-[#303530]">
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

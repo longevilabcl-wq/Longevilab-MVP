@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000" width="100%" height="100%">
+  <!-- Canvas Background matching Instagram post ivory cream -->
+  <rect width="1000" height="1000" fill="#FAF6F0" />
+
+  <!-- 4 Bauhaus Pastel Circles -->
+  <!-- Top-Left: Soft Pastel Sky Blue -->
+  <circle cx="320" cy="310" r="150" fill="#A3C6EB" />
+
+  <!-- Top-Right: Pastel Canary Yellow -->
+  <circle cx="680" cy="310" r="150" fill="#F9DE69" />
+
+  <!-- Bottom-Left: Pastel Peach Apricot Orange -->
+  <circle cx="320" cy="675" r="150" fill="#F6A76E" />
+
+  <!-- Bottom-Right: Pastel Mint Green -->
+  <circle cx="680" cy="675" r="150" fill="#93E4AB" />
+
+  <!-- Top-Left L (Longevi) -->
+  <path
+    d="M 200 125
+       L 258 125
+       L 258 425
+       L 472 425
+       L 472 475
+       L 200 475
+       Z"
+    fill="#232323"
+  />
+
+  <!-- Bottom-Right L (Lab) -->
+  <path
+    d="M 560 495
+       L 618 495
+       L 618 795
+       L 832 795
+       L 832 845
+       L 560 845
+       Z"
+    fill="#232323"
+  />
+</svg>

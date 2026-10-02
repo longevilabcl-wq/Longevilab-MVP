@@ -1,0 +1,26 @@
+{
+  "name": "LongeviLab",
+  "short_name": "LongeviLab",
+  "description": "Ecosistema de innovación en longevidad. Diseña y activa cómo quieres vivir los próximos años con la experiencia Mi Longevidad.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#4F6757",
+  "icons": [
+    {
+      "src": "/favicon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
