@@ -186,13 +186,14 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
         'Nombre',
         'Email',
         'Teléfono',
-        'Región',
+        'País',
+        'Ciudad o Región',
         'Intereses',
         'Mensaje',
         'Frase del Mapa',
         'Prioridades Seleccionadas'
       ]);
-      sheet.getRange(1, 1, 1, 10).setFontWeight('bold').setBackground('#E8F0E7');
+      sheet.getRange(1, 1, 1, 11).setFontWeight('bold').setBackground('#E8F0E7');
     }
     
     var fecha = data.createdAt ? new Date(data.createdAt).toLocaleString('es-CL', { timeZone: 'America/Santiago' }) : new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' });
@@ -207,6 +208,7 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
       data.name || '',
       data.email || '',
       data.phone || '',
+      data.country || '',
       data.region || '',
       intereses,
       data.message || '',
@@ -732,9 +734,14 @@ export const LeadsAdminModal: React.FC<LeadsAdminModalProps> = ({ isOpen, onClos
                             <strong>Teléfono:</strong> <a href={`tel:${lead.phone}`} className="text-[#303530]">{lead.phone}</a>
                           </div>
                         )}
+                        {lead.country && (
+                          <div>
+                            <strong>País:</strong> {lead.country}
+                          </div>
+                        )}
                         {lead.region && (
                           <div>
-                            <strong>Región:</strong> {lead.region}
+                            <strong>Ciudad/Región:</strong> {lead.region}
                           </div>
                         )}
                       </div>

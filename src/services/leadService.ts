@@ -184,8 +184,9 @@ export async function sendTestWebhook(targetUrl?: string): Promise<{ success: bo
     source: 'mapa_longevidad',
     name: 'Prueba de Conexión LongeviLab',
     email: 'contacto.prueba@longevilab.cl',
-    phone: '+56 9 1234 5678',
-    region: 'Región Metropolitana',
+    phone: '+34 612 345 678 / +56 9 1234 5678',
+    country: 'Chile',
+    region: 'Santiago / Madrid',
     interests: ['Prueba de sincronización con Google Sheets'],
     message: 'Esta es una fila de prueba generada desde la plataforma web.',
     mapSummary: {
@@ -215,13 +216,14 @@ export function exportLeadsToCSV(): void {
     return;
   }
 
-  const headers = ['Fecha', 'Origen', 'Nombre', 'Email', 'Teléfono', 'Región', 'Intereses', 'Mensaje', 'Frase Mapa', 'Prioridades'];
+  const headers = ['Fecha', 'Origen', 'Nombre', 'Email', 'Teléfono', 'País', 'Ciudad/Región', 'Intereses', 'Mensaje', 'Frase Mapa', 'Prioridades'];
   const rows = leads.map((l) => [
     `"${new Date(l.createdAt).toLocaleString('es-CL')}"`,
     `"${l.source === 'mapa_longevidad' ? 'Mapa de Longevidad' : 'Contacto Web'}"`,
     `"${(l.name || '').replace(/"/g, '""')}"`,
     `"${(l.email || '').replace(/"/g, '""')}"`,
     `"${(l.phone || '').replace(/"/g, '""')}"`,
+    `"${(l.country || '').replace(/"/g, '""')}"`,
     `"${(l.region || '').replace(/"/g, '""')}"`,
     `"${(l.interests || []).join('; ')}"`,
     `"${(l.message || '').replace(/"/g, '""')}"`,

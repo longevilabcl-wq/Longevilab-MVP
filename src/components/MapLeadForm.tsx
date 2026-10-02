@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { LongevityMap } from '../types';
 import { saveLeadSubmission } from '../services/leadService';
-import { Mail, Check, ArrowRight, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { COUNTRIES } from '../data/countries';
+import { Mail, Check, ArrowRight, ShieldCheck, HeartHandshake, Globe } from 'lucide-react';
 
 interface MapLeadFormProps {
   map: LongevityMap;
@@ -11,6 +12,7 @@ export const MapLeadForm: React.FC<MapLeadFormProps> = ({ map }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [country, setCountry] = useState('Chile');
   const [region, setRegion] = useState('');
   const [interests, setInterests] = useState<string[]>([
     'Recibir una copia digital de mi Mapa de Longevidad',
@@ -22,29 +24,9 @@ export const MapLeadForm: React.FC<MapLeadFormProps> = ({ map }) => {
 
   const AVAILABLE_INTERESTS = [
     'Recibir una copia digital de mi Mapa de Longevidad',
-    'Avisarme de talleres y actividades en mi zona',
+    'Avisarme de talleres y actividades en mi país o zona',
     'Conocer comunidades y proyectos para participar',
     'Espacios de conversación y mentoría intergeneracional',
-  ];
-
-  const CHILE_REGIONS = [
-    'Región Metropolitana de Santiago',
-    'Región de Valparaíso',
-    'Región del Biobío',
-    'Región de Antofagasta',
-    'Región de Coquimbo',
-    'Región de O’Higgins',
-    'Región del Maule',
-    'Región de La Araucanía',
-    'Región de Los Lagos',
-    'Región de Los Ríos',
-    'Región de Arica y Parinacota',
-    'Región de Tarapacá',
-    'Región de Atacama',
-    'Región de Ñuble',
-    'Región de Aysén',
-    'Región de Magallanes',
-    'Fuera de Chile / Otra',
   ];
 
   const toggleInterest = (item: string) => {
@@ -77,7 +59,8 @@ export const MapLeadForm: React.FC<MapLeadFormProps> = ({ map }) => {
         name: name.trim(),
         email: email.trim(),
         phone: phone.trim() || undefined,
-        region: region || undefined,
+        country: country || undefined,
+        region: region.trim() || undefined,
         interests,
         mapSummary: {
           date: map.dateFormatted,
@@ -161,7 +144,7 @@ export const MapLeadForm: React.FC<MapLeadFormProps> = ({ map }) => {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Ej: nombre@correo.cl"
+              placeholder="Ej: carmen@ejemplo.com"
               className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-base text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none transition-colors"
             />
           </div>
@@ -179,32 +162,46 @@ export const MapLeadForm: React.FC<MapLeadFormProps> = ({ map }) => {
               type="tel"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
-              placeholder="+56 9 1234 5678"
+              placeholder="Ej: +34 612 345 678, +56 9 1234 5678, +52..."
               className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-base text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none transition-colors"
             />
           </div>
 
-          {/* Región / Ciudad */}
+          {/* País */}
           <div className="space-y-1.5">
-            <div className="flex justify-between items-baseline">
-              <label htmlFor="map-lead-region" className="block text-base font-bold text-[#303530]">
-                Región o Ciudad
-              </label>
-              <span className="text-xs text-[#303530]/60 uppercase font-semibold">Opcional</span>
-            </div>
+            <label htmlFor="map-lead-country" className="block text-base font-bold text-[#303530]">
+              País
+            </label>
             <select
-              id="map-lead-region"
-              value={region}
-              onChange={(e) => setRegion(e.target.value)}
+              id="map-lead-country"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
               className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-base text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none transition-colors"
             >
-              <option value="">Selecciona tu región...</option>
-              {CHILE_REGIONS.map((r) => (
-                <option key={r} value={r}>
-                  {r}
+              {COUNTRIES.map((c) => (
+                <option key={c} value={c}>
+                  {c}
                 </option>
               ))}
             </select>
+          </div>
+
+          {/* Ciudad / Provincia / Región */}
+          <div className="space-y-1.5 sm:col-span-2">
+            <div className="flex justify-between items-baseline">
+              <label htmlFor="map-lead-region" className="block text-base font-bold text-[#303530]">
+                Ciudad o Región / Provincia
+              </label>
+              <span className="text-xs text-[#303530]/60 uppercase font-semibold">Opcional</span>
+            </div>
+            <input
+              id="map-lead-region"
+              type="text"
+              value={region}
+              onChange={(e) => setRegion(e.target.value)}
+              placeholder="Ej: Madrid, Barcelona, Santiago, CDMX, Bogotá, Buenos Aires, Lima…"
+              className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-base text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none transition-colors"
+            />
           </div>
         </div>
 

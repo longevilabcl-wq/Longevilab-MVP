@@ -69,6 +69,7 @@ export interface LeadSubmission {
   name: string;
   email: string;
   phone?: string;
+  country?: string;
   region?: string;
   interests?: string[];
   message?: string;

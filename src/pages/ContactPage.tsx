@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ViewType } from '../types';
 import { saveLeadSubmission } from '../services/leadService';
+import { COUNTRIES } from '../data/countries';
 import { ArrowLeft, Check, Send, ShieldCheck } from 'lucide-react';
 
 interface ContactPageProps {
@@ -11,6 +12,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [country, setCountry] = useState('Chile');
   const [region, setRegion] = useState('');
   const [profileType, setProfileType] = useState('Persona interesada en la experiencia');
   const [message, setMessage] = useState('');
@@ -70,7 +72,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
         name: name.trim(),
         email: email.trim(),
         phone: phone.trim() || undefined,
-        region: region || undefined,
+        country: country || undefined,
+        region: region.trim() || undefined,
         interests: [profileType, ...interests],
         message: message.trim(),
       });
@@ -161,7 +164,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="Ej: carmen@correo.cl"
+                  placeholder="Ej: carmen@ejemplo.com"
                   className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-base text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
@@ -179,16 +182,35 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   type="tel"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
-                  placeholder="+56 9 8765 4321"
+                  placeholder="Ej: +34 612 345 678, +56 9 8765 4321, +52..."
                   className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-base text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
 
-              {/* Región */}
+              {/* País */}
+              <div className="space-y-1.5">
+                <label htmlFor="contact-country" className="block text-base font-bold text-[#303530]">
+                  País
+                </label>
+                <select
+                  id="contact-country"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-base text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none transition-colors"
+                >
+                  {COUNTRIES.map((c) => (
+                    <option key={c} value={c}>
+                      {c}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              {/* Región o Ciudad */}
               <div className="space-y-1.5">
                 <div className="flex justify-between items-baseline">
                   <label htmlFor="contact-region" className="block text-base font-bold text-[#303530]">
-                    Ciudad o Región
+                    Ciudad o Región / Provincia
                   </label>
                   <span className="text-xs text-[#303530]/60 uppercase font-semibold">Opcional</span>
                 </div>
@@ -197,7 +219,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({ onNavigate }) => {
                   type="text"
                   value={region}
                   onChange={(e) => setRegion(e.target.value)}
-                  placeholder="Ej: Santiago, Concepción, Viña del Mar…"
+                  placeholder="Ej: Madrid, Barcelona, Santiago, CDMX, Bogotá…"
                   className="w-full p-4 rounded-xl bg-[#FAF7F2] border-2 border-[#879B83]/30 text-base text-[#303530] focus:border-[#4F6757] focus:bg-white focus:outline-none transition-colors"
                 />
               </div>
