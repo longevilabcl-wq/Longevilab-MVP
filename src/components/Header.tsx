@@ -69,10 +69,7 @@ export const Header: React.FC<HeaderProps> = ({
           className="text-2xl font-bold tracking-tight text-[#303530] hover:opacity-85 transition-opacity text-left cursor-pointer focus-visible:ring-2 focus-visible:ring-[#4F6757] rounded-lg p-1 flex items-center gap-2.5"
         >
           <img src="/favicon.svg" alt="LongeviLab" className="w-8 h-8 rounded-lg border border-[#303530]/10 object-contain shadow-xs" />
-          <span className="flex items-center gap-1.5">
-            <span>LongeviLab</span>
-            <span className="w-2.5 h-2.5 rounded-full bg-[#C97863]" aria-hidden="true" />
-          </span>
+          <span>LongeviLab</span>
         </button>
 
         {/* Zone 2: Clean navigation links */}

@@ -30,10 +30,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenAdmin }) => {
             className="text-2xl font-bold tracking-tight text-[#303530] text-left hover:opacity-85 transition-opacity cursor-pointer flex items-center gap-2.5"
           >
             <img src="/favicon.svg" alt="LongeviLab" className="w-8 h-8 rounded-lg border border-[#303530]/10 object-contain shadow-xs" />
-            <span className="flex items-center gap-1.5">
-              <span>LongeviLab</span>
-              <span className="w-2.5 h-2.5 rounded-full bg-[#C97863]" aria-hidden="true" />
-            </span>
+            <span>LongeviLab</span>
           </button>
           <p className="mt-3 text-lg text-[#4F6757] font-semibold italic">
             “La vejez no se improvisa, se construye día a día.”
